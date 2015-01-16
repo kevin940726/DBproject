@@ -1,7 +1,6 @@
 var port = 1337;
 var express = require('./config/express');
 var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
 var bodyParser = require('body-parser');
 var app = express();
 

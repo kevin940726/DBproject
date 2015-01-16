@@ -66,11 +66,11 @@ index.controller('MoviesListCtrl', function ($scope, $http, $window, themovie) {
 	$scope.pageSize = 25;
 	$scope.numberOfPages = function(){
 		if (!$scope.movies || !$scope.movies.length) return;
-		return $scope.movies.length/$scope.pageSize;
+		return Math.floor($scope.movies.length/$scope.pageSize)+1;
 	};
-	//$scope.getNumber = function(num) {
-	  //  return new Array(+num);   
-	//};
+	$scope.getNumber = function(num) {
+	    return new Array(num);   
+	};
 	$scope.pageClass = function(page){
 		return page == $scope.currentPage ? 'active' : '';
 	};
