@@ -101,11 +101,10 @@ index.controller('MoviesListCtrl', function ($scope, $http, $window, themovie) {
   }             
 });
 
+
 index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $location, themovie) {
 	$http.get('/api/movies').success(function(data) {
 		$scope.movies = data;
-  	$scope.act_movie = data['ACT_MOVIES'];
-  	$scope.people = data['PEOPLE'];
   	$scope.moviesNum = $scope.movies.length;
 
   	if (themovie.get().Movie_Id != undefined) $scope.movie = themovie.get();
@@ -115,6 +114,12 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
   	}
     $rootScope.title = $scope.movie.Movie_Title + " - IMDb2";
     $scope.formset($scope.movie);
+    $http.get('api/actMovie/'+$scope.movie.Movie_Id).success(function(data) {
+      $scope.acts = data;
+    });
+    $http.get('api/people/').success(function(data) {
+      $scope.people = data;
+    });
 	});	
 
 	$scope.changemovie = function(data, operator){
@@ -124,6 +129,9 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
 		else if (id == $scope.movies.length-1 && operator == 1) id = -1;
 		$rootScope.title = $scope.movies[id + operator].Movie_Title + " - IMDb2";
     $scope.formset($scope.movies[id + operator]);
+    $http.get('api/actMovie/'+$scope.movies[id + operator].Movie_Id).success(function(data) {
+      $scope.acts = data;
+    });
     return $scope.movies[id + operator]; 	
   };
   $scope.removeMovie = function(data) {

@@ -22,17 +22,26 @@ var movieSchema = new mongoose.Schema({
 	Company: String
 });
 
-var testingSchema = new mongoose.Schema({
-	_id: Number,
-	testa: String,
-	testb: String,
-	testc: String
+var peopleSchema = new mongoose.Schema({
+	People_Id: String,
+	People_Name: String,
+	Birth_Date: String,
+	Country: String,
+	Img_Src: String,
+	Description: String
+});
+
+var actMovieSchema = new mongoose.Schema({
+	Movie_Id: String,
+	People_Id: String,
+	Character: String
 });
 
 app.use(bodyParser.urlencoded());
 
 var Movies = mongoose.model('Movies', movieSchema, 'MOVIES');
-var testing = mongoose.model('testing', testingSchema);
+var People = mongoose.model('People', peopleSchema, 'PEOPLE');
+var ActMovie = mongoose.model('ActMovie', actMovieSchema, 'ACT_MOVIE')
 mongoose.connect('mongodb://kai:kai41@ds031691.mongolab.com:31691/mydb');
 
 //GET METHOD.
@@ -127,3 +136,174 @@ app.put('/api/movies/:id', function (req, res) {
   });
 });
 
+//--------------------------------PEOPLE-----------------------------
+//GET METHOD OF PEOPLE.
+app.get('/api/people', function(req, res){
+	return People.find(function(err, people){
+		if(!err){
+			return res.send(people);
+		}
+		else{
+			return res.send("Error!");
+		}
+	});
+});
+
+//GET METHOD BY ID OF PEOPLE.
+app.get('/api/people/:id', function(req, res){
+	return People.findOne({People_Id: req.params.id}, function(err, people){
+		if(!err){
+			return res.send(people);
+		}
+		else{
+			return res.send("Error!");
+		}
+	});
+});
+
+// POST to CREATE OF PEOPLE
+app.post('/api/people', function (req, res) {
+  var person;
+  console.log("POST: ");
+  console.log(req.body);
+  person = new People({
+  	People_Id: req.body.People_Id,
+	People_Name: req.body.People_Name,
+	Birth_Date: req.body.Birth_Date,
+	Country: req.body.Country,
+	Img_Src: req.body.Img_Src,
+	Description: req.body.Description
+  });
+  person.save(function (err) {
+    if (!err) {
+      return console.log("created");
+    } else {
+      return console.log(err);
+    }
+  });
+  return res.send(person);
+});
+
+// remove a single person
+app.delete('/api/people/:id', function (req, res) {
+  return People.findOne({People_Id: req.params.id}, function (err, person) {
+  	console.log(person);
+    return person.remove(function (err) {
+      if (!err) {
+        console.log("removed");
+        return res.send('');
+      } else {
+        console.log(err);
+      }
+    });
+  });
+});
+
+// Single person update
+app.put('/api/people/:id', function (req, res) {
+  return People.findOne({People_Id: req.params.id}, function (err, person) {
+  	person.People_Id = req.body.People_Id;
+	person.People_Name = req.body.People_Name;
+	person.Birth_Date = req.body.Birth_Date;
+	person.Country = req.body.Country;
+	person.Img_Src = req.body.Img_Src;
+	person.Description = req.body.Description;
+    return person.save(function (err) {
+      if (!err) {
+        console.log("updated");
+      } else {
+        console.log(err);
+      }
+      return res.send(person);
+    });
+  });
+});
+
+//--------------------------------ACT_MOVIE-----------------------------
+//GET METHOD OF ACT_MOVIE.
+app.get('/api/actMovie', function(req, res){
+	return ActMovie.find(function(err, doc){
+		if(!err){
+			return res.send(doc);
+		}
+		else{
+			return res.send("Error!");
+		}
+	});
+});
+
+//GET METHOD BY MOVIE ID OF ACT_MOVIE.
+app.get('/api/actMovie/:id', function(req, res){
+	return ActMovie.find({Movie_Id: req.params.id}, function(err, doc){
+		if(!err){
+			return res.send(doc);
+		}
+		else{
+			return res.send("Error!");
+		}
+	});
+});
+
+//GET METHOD BY MOVIE ID OF ACT_MOVIE.
+app.get('/api/actMovie/:mid/:pid', function(req, res){
+	return ActMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function(err, doc){
+		if(!err){
+			return res.send(doc);
+		}
+		else{
+			return res.send("Error!");
+		}
+	});
+});
+
+//POST to CREATE ACT_MOVIE
+app.post('/api/actMovie', function (req, res) {
+  var doc;
+  console.log("POST: ");
+  console.log(req.body);
+  doc = new ActMovie({
+  	Movie_Id: req.body.Movie_Id,
+  	People_Id: req.body.People_Id,
+	Character: req.body.Character
+  });
+  doc.save(function (err) {
+    if (!err) {
+      return console.log("created");
+    } else {
+      return console.log(err);
+    }
+  });
+  return res.send(doc);
+});
+
+//remove a single doc from ACT_MOVIE
+app.delete('/api/actMovie/:mid/:pid', function (req, res) {
+  return ActMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function (err, doc) {
+  	console.log(doc);
+    return doc.remove(function (err) {
+      if (!err) {
+        console.log("removed");
+        return res.send('');
+      } else {
+        console.log(err);
+      }
+    });
+  });
+});
+
+//Single act update
+app.put('/api/people/:mid/:pid', function (req, res) {
+  return ActMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function (err, doc) {
+  	doc.Movie_Id = req.body.Movie_Id;
+  	doc.People_Id = req.body.People_Id;
+	doc.Character = req.body.Character;
+    return doc.save(function (err) {
+      if (!err) {
+        console.log("updated");
+      } else {
+        console.log(err);
+      }
+      return res.send(doc);
+    });
+  });
+});
