@@ -1,0 +1,40 @@
+<div ng-controller="MoviesListCtrl">
+<form class="row container">
+  <nav>
+    <ul class="pager">
+      <li class="previous"><a href="/"><span aria-hidden="true" class="glyphicon glyphicon-home"></span> Home</a></li>
+    </ul>
+  </nav>
+</form>
+
+<div class="input-group" id="movieSearch">
+  <span class="input-group-btn">
+    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+  </span>
+  <input type="search" class="form-control" placeholder="Search for movies." ng-model="movie_search"/>
+</div>
+<br></br>
+
+<div class="list-group">
+  <a href="movies" class="list-group-item thumbnails" ng-repeat="movie in movies | filter: movie_search | startFrom:currentPage*pageSize | limitTo:pageSize" id="movie_{{movie.Movie_Id}}" ng-click="submitmovie(movie)">
+    <div class="row container">
+      <div class="col-md-1">
+        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{movie.Img_Src}}"/>
+      </div>
+      <div class="col-md-11">
+        <h4 class="list-group-item-heading" style="line-height: 65px;">
+          <span class="label label-danger">#{{movie.Movie_Id*1 + 1}}</span> {{movie.Movie_Title}}
+        </h4>
+      </div>
+    </div>
+  </a>
+</div>
+
+<nav>
+  <ul class="pagination">
+    <li><a href="" ng-class="currentPage <= 0 ? 'btn disabled' : ''" aria-label="Previous" id="prevPage" ng-click="changePage(currentPage-1)"><span aria-hidden="true">&laquo;</span></a></li>
+    <li ng-class="pageClass({{$index}})" ng-repeat="page in getNumber(numberOfPages()) track by $index"><a href="" ng-click="changePage($index)">{{$index+1}}</a></li>
+    <li><a href="" ng-class="currentPage >= numberOfPages()-1 ? 'btn disabled' : ''" aria-label="Next" id="nextPage" ng-click="changePage(currentPage+1)"><span aria-hidden="true">&raquo;</span></a></li>
+  </ul>
+</nav>
+</div>

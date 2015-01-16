@@ -1,0 +1,17 @@
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "description": "TEWStss",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.10.1",
+    "ejs": "^2.1.4",
+    "express": "^4.10.7",
+    "mongoose": "x.x.0"
+  }
+}
