@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="index">
-<head>
+<head> 
+    <base href="/">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Internet Movies Database 2">
+    <meta name="author" content="NTU IM 105">
     <link rel="icon" href="../../favicon.ico">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.js"></script>
     <script src="http://code.angularjs.org/1.2.0-rc.2/angular-route.min.js"></script>
     <script src="js/indexjs.js"></script>
-	<base href="/">
     <title ng-bind="title">IMDb2 - Internet Movies Database 2</title>
 </head>
 <body ng-controller="mainCtrl">
@@ -30,13 +30,7 @@
                     </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Movies <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="movies">Radom Movie</a></li>
-                                <li><a href="movieList">Movies List</a></li>
-                            </ul>
-                        </li>
+                        <li ng-class="{active: isActive('/movies')}"><a href="movies">Movies</a></li>
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">TV Series <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -51,8 +45,8 @@
                                 <li><a href="#">People List</a></li>
                             </ul>
                         </li>
-                        <li><a href="#" id="Group-btn">Group</a></li>
-                        <li><a href="#" class="Details-btn">Details</a></li>
+                        <li><a href="/" id="Group-btn">Group</a></li>
+                        <li><a href="/" class="Details-btn">Details</a></li>
                     </ul>
                     <p class="navbar-text navbar-right" style="margin-right: 30px">IM NTU 105</p>
                     <form class="navbar-form navbar-right" role="search">
@@ -90,6 +84,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

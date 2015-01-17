@@ -104,7 +104,7 @@
 <br></br>
 
 <div class="list-group">
-  <a href="movies" class="list-group-item thumbnails" ng-repeat="movie in movies | filter: movie_search | startFrom:currentPage*pageSize | limitTo:pageSize" id="movie_{{movie.Movie_Id}}" ng-click="submitmovie(movie)">
+  <a href="movies/{{movie.Movie_Id}}" class="list-group-item thumbnails" ng-repeat="movie in movies | filter: movie_search | startFrom:currentPage*pageSize | limitTo:pageSize" id="movie_{{movie.Movie_Id}}" ng-click="submitmovie(movie)">
     <div class="row container">
       <div class="col-md-1">
         <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{movie.Img_Src}}"/>

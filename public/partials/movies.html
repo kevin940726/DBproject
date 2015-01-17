@@ -1,10 +1,10 @@
 <div ng-controller="MoviesCtrl">
 <nav>
   <ul class="pager">
-    <li class="previous"><a href="movies" ng-click="movie = changemovie(movie, -1)"><span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span> Prev</a></li>
-    <li class="movielist"><a href="movieList"><span aria-hidden="true" class="glyphicon glyphicon-th-list"></span> List</a></li>
-    <li class="random"><a href="#movies" ng-click="movie = changemovie(movie, 0)"><span aria-hidden="true" class="glyphicon glyphicon-random"></span> Random</a></li>
-    <li class="next"><a href="movies" ng-click="movie = changemovie(movie, 1)">Next <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a></li>
+    <li class="previous"><a href="movies/{{movie.Movie_Id*1 === 0 ? total-1 : movie.Movie_Id*1-1}}"><span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span> Prev</a></li>
+    <li class="movielist"><a href="movies"><span aria-hidden="true" class="glyphicon glyphicon-th-list"></span> List</a></li>
+    <li class="random"><a ng-click="randomMovie(total)" href=""><span aria-hidden="true" class="glyphicon glyphicon-random"></span> Random</a></li>
+    <li class="next"><a href="movies/{{movie.Movie_Id*1 === total-1 ? 0 : movie.Movie_Id*1+1}}">Next <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a></li>
   </ul>
 </nav>
 <div class="page-header">

@@ -1,6 +1,6 @@
 var index = angular.module('index', ['ngRoute']);
 
-index.factory('themovie', function(){
+/*index.factory('themovie', function(){
 	var saved = {};
 	return {
 	set: function(data){
@@ -9,7 +9,7 @@ index.factory('themovie', function(){
 	get: function(){
 		return saved;
 	}};
-});
+});*/
 
 index.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
@@ -18,20 +18,18 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
 			templateUrl : 'partials/view.html',
 			controller  : 'mainCtrl'
 		})
-		.when('/movieList', {
+		.when('/movies', {
 			title: 'Movies List - IMDb2',
 			templateUrl : 'partials/movieList.html',
 			controller  : 'MoviesListCtrl'
 		})
-		.when('/movies', {
+		.when('/movies/:id', {
       title: ' - IMDb2',
 			templateUrl : 'partials/movies.html',
 			controller  : 'MoviesCtrl'
 		})
 		.otherwise({
-			title: 'IMDb2 - Internet Movies Database 2',
-			templateUrl : 'partials/view.html',
-			controller  : 'mainCtrl'
+			redirectTo: '/'
 		});
   $locationProvider.html5Mode(true);
 }]);
@@ -42,10 +40,11 @@ index.run(['$location', '$rootScope', function($location, $rootScope) {
     });
 }]);
 
-index.controller('mainCtrl', function($scope, $http) {
-  $http.get('/api/movies/1').success(function(data){
-    $scope.res = data;
-  });
+index.controller('mainCtrl', function($scope, $http, $location) {
+  $scope.isActive = function(locationPath) {
+    if ($location.path().match(locationPath)) return true;
+    else return false;
+  }
 });
 
 index.filter('startFrom', function() {
@@ -55,13 +54,10 @@ index.filter('startFrom', function() {
   	};
 });
 
-index.controller('MoviesListCtrl', function ($scope, $http, $window, themovie) {
+index.controller('MoviesListCtrl', function ($scope, $http, $window) {
 	$http.get('/api/movies').success(function(data) {
     	$scope.movies = data;
 	});
-	$scope.submitmovie = function(data){
-		themovie.set(data);
-	};
 	$scope.currentPage = 0;
 	$scope.pageSize = 25;
 	$scope.numberOfPages = function(){
@@ -96,22 +92,20 @@ index.controller('MoviesListCtrl', function ($scope, $http, $window, themovie) {
       }),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
-      $window.location.href = '/movieList';
+      $window.location.href = '/movies';
     });
   }             
 });
 
 
-index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $location, themovie) {
+index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
 	$http.get('/api/movies').success(function(data) {
-		$scope.movies = data;
-  	$scope.moviesNum = $scope.movies.length;
+    $scope.total = data.length;
+  });
+  $http.get('/api/movies/'+$routeParams.id).success(function(data) {
+    if (data.length !== 0) $scope.movie = data;
+    else $location.path("/movies");
 
-  	if (themovie.get().Movie_Id != undefined) $scope.movie = themovie.get();
-  	else{
-  		var rand = Math.floor((Math.random()*$scope.moviesNum));
-  		$scope.movie = $scope.movies[rand];
-  	}
     $rootScope.title = $scope.movie.Movie_Title + " - IMDb2";
     $scope.formset($scope.movie);
     $http.get('api/actMovie/'+$scope.movie.Movie_Id).success(function(data) {
@@ -121,18 +115,13 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       $scope.people = data;
     });
 	});	
-
-	$scope.changemovie = function(data, operator){
-		var id = data.Movie_Id*1;
-		if (operator == 0) id = Math.floor(Math.random()*$scope.moviesNum);
-		else if (id == 0 && operator == -1) id = $scope.movies.length;
-		else if (id == $scope.movies.length-1 && operator == 1) id = -1;
-		$rootScope.title = $scope.movies[id + operator].Movie_Title + " - IMDb2";
-    $scope.formset($scope.movies[id + operator]);
-    $http.get('api/actMovie/'+$scope.movies[id + operator].Movie_Id).success(function(data) {
-      $scope.acts = data;
-    });
-    return $scope.movies[id + operator]; 	
+  $scope.randomMovie = function(data) {
+    var rand = Math.floor((Math.random()*data));
+    while (rand === $routeParams.id*1){
+      rand = Math.floor((Math.random()*data));
+    }
+    $location.path("/movies/"+rand);
+    return rand;
   };
   $scope.removeMovie = function(data) {
     var id = data.Movie_Id;
@@ -141,7 +130,7 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       url: 'api/movies/'+id,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
-      $location.path("/movieList");
+      $location.path("/movies");
     });
   };
   $scope.formset = function(data) {
@@ -179,7 +168,7 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       }),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
-      $window.location.href = '/movies';
+      $window.location.href = '/movies/'+id;
     })
   }; 
 });
