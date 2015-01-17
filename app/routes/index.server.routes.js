@@ -287,7 +287,7 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/people/:mid/:pid', function (req, res) {
+	app.put('/api/actMovie/:mid/:pid', function (req, res) {
 	  return ActMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.Movie_Id = req.body.Movie_Id;
 	  	doc.People_Id = req.body.People_Id;

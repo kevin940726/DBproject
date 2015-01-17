@@ -147,6 +147,10 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       Language: data.Language,
       Company: data.Company
     };
+    $scope.form2 = {
+      PoepleId: data.People_Id,
+      Character: data.Character
+    }
   };
   $scope.updateMovie = function(data) {
     var id = data.Movie_Id;
@@ -171,6 +175,51 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       $window.location.href = '/movies/'+id;
     })
   }; 
+  $scope.updateAct = function() {
+    var mid = $routeParams.id;
+    var pid = $scope.form2.PeopleId;
+    $http.get('api/actMovie/'+mid+'/'+pid).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/actMovie/'+mid+'/'+pid,
+          data: $.param({
+            Movie_Id: mid,
+            People_Id: pid,
+            Character: $scope.form2.Character
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/movies/'+mid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/actMovie/',
+          data: $.param({
+            Movie_Id: mid,
+            People_Id: pid,
+            Character: $scope.form2.Character
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/movies/'+mid;
+        });
+      }
+    });
+  };
+  $scope.deleteAct = function(data) {
+    var mid = data.Movie_Id;
+    var pid = data.People_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/actMovie/'+mid+'/'+pid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/movies/'+mid;
+    });
+  }
 });
 
 

@@ -13,7 +13,7 @@
   <a href="" class="btn" ng-click="removeMovie(movie)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></a></h1>
 </div>
 
-<!-- Modal -->
+<!-- Modal Edit Movie-->
 <div class="modal fade" id="updateMovie" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -116,15 +116,53 @@
 </div>
 
 <br></br>
-<h2>Cast</h2>
+<h2>Cast
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAct"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
 <div class="list-group">
-<a href="#" class="list-group-item thumbnails" id="people_{{cast.People_Id}}" ng-repeat="cast in acts">
+<a href="#" class="list-group-item clearfix" id="people_{{cast.People_Id}}" ng-repeat="cast in acts" ng-context-menu="menuOptions">
   <div class="row container">
     <div class="col-md-1"><img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)" src="{{person.Img_Src}}"/></div>
-    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)">
+    <div class="col-md-10"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)">
     {{person.People_Name}}  <small><span class="label label-default">as</span></small>    {{cast.Character}}
     </h4></div>
+    <button href="" class="btn btn-link" ng-click="deleteAct(cast)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
-</a>
+</a> 
 </div>
+</div>
+
+<!-- Modal Edit Act-->
+<div class="modal fade" id="updateAct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add/Edit The Actor/Actress.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateAct()">
+          <div class="form-group">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">People ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.PeopleId" placeholder="People ID" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Character Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Character" placeholder="Character">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
 </div>
