@@ -20,6 +20,16 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
 			templateUrl : 'partials/movies.html',
 			controller  : 'MoviesCtrl'
 		})
+    .when('/people', {
+      title: 'People List - IMDb2',
+      templateUrl: 'partials/peopleList.html',
+      controller: 'PeopleListCtrl'
+    })
+    .when('/people/:id', {
+      title: ' - IMDb2',
+      templateUrl: 'partials/people.html',
+      controller: 'PeopleCtrl',
+    })
 		.otherwise({
 			redirectTo: '/'
 		});
@@ -222,4 +232,106 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       $window.location.href = '/movies/'+mid;
     });
   }
+});
+
+
+index.controller('PeopleListCtrl', function($scope, $http, $window) {
+  $http.get('/api/people').success(function(data) {
+      $scope.people = data;
+  });
+  $scope.currentPage = 0;
+  $scope.pageSize = 25;
+  $scope.numberOfPages = function(){
+    if (!$scope.people || !$scope.people.length) return;
+    return Math.floor($scope.people.length/$scope.pageSize)+1;
+  };
+  $scope.getNumber = function(num) {
+      return new Array(num);   
+  };
+  $scope.pageClass = function(page){
+    return page == $scope.currentPage ? 'active' : '';
+  };
+  $scope.changePage = function(page){
+    $scope.currentPage = page;
+  };
+  $scope.submitForm = function() {
+    $http({
+      method: 'POST',
+      url: 'api/people',
+      data: $.param({
+        People_Id: $scope.form.People_Id,
+        People_Name: $scope.form.People_Name,
+        Birth_Date: $scope.form.Birth_Date,
+        Country: $scope.form.Country,
+        Img_Src: $scope.form.Img_Src,
+        Description: $scope.form.Description
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people';
+    });
+  };     
+});
+
+
+index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
+  $http.get('/api/people').success(function(data) {
+    $scope.total = data.length;
+  });
+  $http.get('/api/people/'+$routeParams.id).success(function(data) {
+    if (data.length !== 0) $scope.person = data;
+    else $location.path("/people");
+
+    $rootScope.title = $scope.person.People_Name + " - IMDb2";
+    $scope.formset($scope.person);
+    $http.get('api/people/').success(function(data) {
+      $scope.people = data;
+    });
+  }); 
+  $scope.randomPerson = function(data) {
+    var rand = Math.floor((Math.random()*data));
+    while (rand === $routeParams.id*1){
+      rand = Math.floor((Math.random()*data));
+    }
+    $location.path("/people/"+rand);
+    return rand;
+  };
+  $scope.removePerson = function(data) {
+    var id = data.People_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/people/'+id,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $location.path("/people");
+    });
+  };
+  $scope.formset = function(data) {
+    $scope.form = {
+      People_Id: data.People_Id,
+      People_Name: data.People_Name,
+      Birth_Date: data.Birth_Date,
+      Country: data.Country,
+      Img_Src: data.Img_Src,
+      Description: data.Description
+    };
+  };
+  $scope.updatePerson = function(data) {
+    var id = data.People_Id;
+    $http({
+      method: 'PUT',
+      url: 'api/people/'+id,
+      data: $.param({
+        People_Id: $scope.form.People_Id,
+        People_Name: $scope.form.People_Name,
+        Birth_Date: $scope.form.Birth_Date,
+        Country: $scope.form.Country,
+        Img_Src: $scope.form.Img_Src,
+        Description: $scope.form.Description
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people/'+id;
+    })
+  }; 
 }); 
