@@ -1,28 +1,23 @@
-<div ng-controller="PeopleCtrl">
-<nav>
-  <ul class="pager">
-    <li class="previous"><a href="people/{{person.People_Id*1 === 0 ? total-1 : person.People_Id*1-1}}"><span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span> Prev</a></li>
-    <li class="peoplelist"><a href="people"><span aria-hidden="true" class="glyphicon glyphicon-th-list"></span> List</a></li>
-    <li class="random"><a ng-click="randomPerson(total)" href=""><span aria-hidden="true" class="glyphicon glyphicon-random"></span> Random</a></li>
-    <li class="next"><a href="people/{{person.People_Id*1 === total-1 ? 0 : person.People_Id*1+1}}">Next <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a></li>
-  </ul>
-</nav>
-<div class="page-header">
-  <h1>{{person.People_Name}} 
-  <a href="" data-toggle="modal" data-target="#updatePerson"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a>
-  <a href="" class="btn" ng-click="removePerson(person)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></a></h1>
-</div>
+<div ng-controller="PeopleListCtrl">
+<form class="row container">
+  <nav>
+    <ul class="pager">
+      <li class="previous"><a href="/"><span aria-hidden="true" class="glyphicon glyphicon-home"></span> Home</a></li>
+      <li class="next"><a href="" data-toggle="modal" data-target="#addPerson"><span aria-hidden="true" class="glyphicon glyphicon-plus" ></span> Add</a></li>
+    </ul>
+  </nav>
+</form>
 
-<!-- Modal Edit Movie-->
-<div class="modal fade" id="updatePerson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="addPerson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit The person.</h4>
+        <h4 class="modal-title" id="myModalLabel">Add Person to List.</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal" ng-submit="updatePerson(person)">
+        <form class="form-horizontal" ng-submit="submitForm()">
           <div class="form-group">
             <label for="inputMovieId" class="col-sm-3 control-label">Person ID</label>
             <div class="col-sm-9">
@@ -70,16 +65,34 @@
   </div>
 </div>
 
-<div class="row featurette">
-  <div class="col-md-3">
-    <a href="{{person.Img_Src}}"><img class="featurette-image img-responsive" src="{{person.Img_Src}}" alt="{{person.People_Name}}"/></a>
-  </div>
-  <div class="col-md-7">
-    
-    <p class="lead" style="text-indent: 2em;">{{person.Description}}</p>
-    <h4><span class="text-muted">Birth Date: </span> {{person.Birth_Date}}</h4>
-    <h4><span class="text-muted">Country: </span> {{person.Country}}</h4>
-  </div>
+<div class="input-group" id="personSearch">
+  <span class="input-group-btn">
+    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+  </span>
+  <input type="search" class="form-control" placeholder="Search for people." ng-model="person_search"/>
+</div>
+<br></br>
+
+<div class="list-group">
+  <a href="people/{{person.People_Id}}" class="list-group-item thumbnails" ng-repeat="person in people | filter: person_search | startFrom:currentPage*pageSize | limitTo:pageSize | object2Array | orderBy: 'People_Name'" id="person_{{person.People_Id}}">
+    <div class="row container">
+      <div class="col-md-1">
+        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{person.Img_Src}}"/>
+      </div>
+      <div class="col-md-11">
+        <h4 class="list-group-item-heading" style="line-height: 65px;">
+          <span class="label label-danger">{{$index + 1}}</span> {{person.People_Name}}
+        </h4>
+      </div>
+    </div>
+  </a>
 </div>
 
-<br></br>
+<nav>
+  <ul class="pagination">
+    <li><a href="" ng-class="currentPage <= 0 ? 'btn disabled' : ''" aria-label="Previous" id="prevPage" ng-click="changePage(currentPage-1)"><span aria-hidden="true">&laquo;</span></a></li>
+    <li ng-class="pageClass({{$index}})" ng-repeat="page in getNumber(numberOfPages()) track by $index"><a href="" ng-click="changePage($index)">{{$index+1}}</a></li>
+    <li><a href="" ng-class="currentPage >= numberOfPages()-1 ? 'btn disabled' : ''" aria-label="Next" id="nextPage" ng-click="changePage(currentPage+1)"><span aria-hidden="true">&raquo;</span></a></li>
+  </ul>
+</nav>
+</div>
