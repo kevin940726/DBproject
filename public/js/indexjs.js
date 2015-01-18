@@ -114,6 +114,12 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
 	$http.get('/api/movies').success(function(data) {
     $scope.total = data.length;
   });
+  $http.get('api/awardMovie/'+$routeParams.id).success(function(data){
+    $scope.awards = data;
+  });
+  $http.get('api/award').success(function(data){
+    $scope.awardsName = data;
+  });
   $http.get('/api/movies/'+$routeParams.id).success(function(data) {
     if (data.length !== 0) $scope.movie = data;
     else $location.path("/movies");
@@ -234,7 +240,56 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
     }).success(function() {
       $window.location.href = '/movies/'+mid;
     });
-  }
+  };
+  $scope.updateAward = function() {
+    var mid = $routeParams.id;
+    var aid = $scope.form3.Award_Id;
+    var y = $scope.form3.Year;
+    $http.get('api/awardMovie/'+mid+'/'+aid+'/'+y).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/awardMovie/'+mid+'/'+aid+'/'+y,
+          data: $.param({
+            Movie_Id: mid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/movies/'+mid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/awardMovie/',
+          data: $.param({
+            Movie_Id: mid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/movies/'+mid;
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var mid = data.Movie_Id;
+    var aid = data.Award_Id;
+    var y = data.Year;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardMovie/'+mid+'/'+aid+'/'+y,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/movies/'+mid;
+    });
+  };
 });
 
 

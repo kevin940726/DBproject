@@ -132,6 +132,28 @@
   </div>
 </a> 
 </div>
+
+
+<br></br>
+<h2>Award
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
+<div class="list-group">
+<a href="" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
+  <div class="row container">
+    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
+      <small>{{award.Year}}</small>    {{award.Type}}
+    </h4></div>
+    <button href="" class="btn btn-link" ng-click="deleteAward(award)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+  </div>
+</a> 
+</div>
+
+
+
+
 </div>
 
 <!-- Modal Edit Act-->
@@ -154,6 +176,45 @@
             <label for="inputReleaseDate" class="col-sm-3 control-label">Character Name</label>
             <div class="col-sm-9">
               <input class="form-control" ng-model="form2.Character" placeholder="Character">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Award-->
+<div class="modal fade" id="updateAward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add/Edit The Award.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateAward()">
+          <div class="form-group">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">Award ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form3.Award_Id" placeholder="Award ID" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Year</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form3.Year" placeholder="yyyy" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Type</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form3.Type" placeholder="Won or Nominated" required>
             </div>
           </div>
           <div class="modal-footer">
