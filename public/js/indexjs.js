@@ -125,6 +125,9 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
     });
     $http.get('api/people/').success(function(data) {
       $scope.people = data;
+      $http.get('api/people/'+$scope.movie.Director).success(function (data2){
+        $scope.director = data2.People_Name;
+      });
     });
 	});	
   $scope.randomMovie = function(data) {
