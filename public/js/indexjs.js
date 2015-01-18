@@ -1,15 +1,7 @@
 var index = angular.module('index', ['ngRoute']);
 
-/*index.factory('themovie', function(){
-	var saved = {};
-	return {
-	set: function(data){
-		saved = data;
-	},
-	get: function(){
-		return saved;
-	}};
-});*/
+index.value('duScrollDuration', 2000);
+index.value('duScrollOffset', 30);
 
 index.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
@@ -44,7 +36,7 @@ index.controller('mainCtrl', function($scope, $http, $location) {
   $scope.isActive = function(locationPath) {
     if ($location.path().match(locationPath)) return true;
     else return false;
-  }
+  };
 });
 
 index.filter('startFrom', function() {
@@ -52,6 +44,16 @@ index.filter('startFrom', function() {
     	if (!input || !input.length) return;
     	return input.slice(start);
   	};
+});
+
+index.filter('object2Array', function() {
+  return function(input) {
+    var out = []; 
+    for(i in input){
+      out.push(input[i]);
+    }
+    return out;
+  }
 });
 
 index.controller('MoviesListCtrl', function ($scope, $http, $window) {
@@ -220,6 +222,4 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       $window.location.href = '/movies/'+mid;
     });
   }
-});
-
-
+}); 
