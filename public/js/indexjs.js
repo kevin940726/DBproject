@@ -1,8 +1,5 @@
 var index = angular.module('index', ['ngRoute']);
 
-index.value('duScrollDuration', 2000);
-index.value('duScrollOffset', 30);
-
 index.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/', {
@@ -23,7 +20,13 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     .when('/tvshow', {
       title: 'TV Show List- IMDb2',
       templateUrl : 'partials/tvshowList.html',
+      controller  : 'TVShowListCtrl'
+    })
+    .when('/tvshow/:id', {
+      title: ' - IMDb2',
+      templateUrl : 'partials/tvshows.html',
       controller  : 'TVShowCtrl'
+    })
     .when('/people', {
       title: 'People List - IMDb2',
       templateUrl: 'partials/peopleList.html',
@@ -335,8 +338,8 @@ index.controller('PeopleListCtrl', function($scope, $http, $window) {
   };     
 });
 
-index.controller('TVshowListCtrl', function ($scope, $http, $window) {
-  $http.get('/api/tvshows').success(function(data) {
+index.controller('TVShowListCtrl', function ($scope, $http, $window) {
+  $http.get('/api/tvshow').success(function(data) {
       $scope.tvshow = data;
   });
   $scope.currentPage = 0;
@@ -357,7 +360,7 @@ index.controller('TVshowListCtrl', function ($scope, $http, $window) {
   $scope.submitForm = function() {
     $http({
       method: 'POST',
-      url: 'api/tvshows',
+      url: 'api/tvshow',
       data: $.param({
         TVshow_Id: $scope.form.TVshowId,
         TVshow_Title: $scope.form.TVshowTitle,
@@ -437,6 +440,70 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
       $window.location.href = '/people/'+id;
+    })
+  }; 
+}); 
+
+index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
+  $http.get('/api/tvshow').success(function(data) {
+    $scope.tvshows = data;
+    $scope.total = data.length;
+  });
+  $http.get('api/people').success(function(data) {
+    $scope.people = data;
+  });
+  $http.get('api/awardTV/'+$routeParams.id).success(function(data){
+    $scope.awards = data;
+  });
+  $http.get('api/award').success(function(data){
+    $scope.awardsName = data;
+  });
+  $http.get('/api/tvshow/'+$routeParams.id).success(function(data) {
+    if (data.length !== 0) $scope.tvshow = data;
+    else $location.path("/tvshow");
+
+    $rootScope.title = $scope.tvshow.Title + " - IMDb2";
+    $scope.formset($scope.tvshow);
+    $http.get('api/actTVshow/'+$routeParams.id).success(function(data) {
+      $scope.acts = data;
+    })
+  }); 
+  $scope.removeTVshow = function(data) {
+    var id = data.Show_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/tvshow/'+id,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $location.path("/tvshow");
+    });
+  };
+  $scope.formset = function(data) {
+    $scope.form = {
+      People_Id: data.People_Id,
+      People_Name: data.People_Name,
+      Birth_Date: data.Birth_Date,
+      Country: data.Country,
+      Img_Src: data.Img_Src,
+      Description: data.Description
+    };
+  };
+  $scope.updateTVshow = function(data) {
+    var id = data.Show_Id;
+    $http({
+      method: 'PUT',
+      url: 'api/tvshow/'+id,
+      data: $.param({
+        People_Id: $scope.form.People_Id,
+        People_Name: $scope.form.People_Name,
+        Birth_Date: $scope.form.Birth_Date,
+        Country: $scope.form.Country,
+        Img_Src: $scope.form.Img_Src,
+        Description: $scope.form.Description
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshow/'+id;
     })
   }; 
 }); 

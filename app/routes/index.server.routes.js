@@ -520,17 +520,17 @@ module.exports = function(app) {
 		});
 	});
 
-	// 這一段好像跟下面的差不多但是是錯的//GET METHOD BY MOVIE ID OF ACT_MOVIE. 
-	// app.get('/api/actMovie/:id', function(req, res){
-	// 	return ActMovie.find({Movie_Id: req.params.id}, function(err, doc){
-	// 		if(!err){
-	// 			return res.send(doc);
-	// 		}
-	// 		else{
-	// 			return res.send("Error!");
-	// 		}
-	// 	});
-	// });
+	//GET METHOD BY MOVIE ID OF ACT_MOVIE. 
+	app.get('/api/actMovie/:id', function(req, res){
+		return ActMovie.find({Movie_Id: req.params.id}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
 
 	//GET METHOD BY MOVIE ID OF ACT_MOVIE.
 	app.get('/api/actMovie/:mid/:pid', function(req, res){
@@ -951,10 +951,7 @@ module.exports = function(app) {
 	  });
 	});
 
-	app.get('*', function(req, res) {
-		res.render('index');
-	});
-};
+
 	//--------------------------------AWARD_TV END-----------------------------
 
 	//--------------------------------ACT_TV START-----------------------------
@@ -971,8 +968,20 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF ACT_TV.
+	app.get('/api/actTVShow/:sid', function(req, res){
+		return ActTVShow.find({Show_Id: req.params.sid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF ACT_TV.
 	app.get('/api/actTVShow/:sid/:pid', function(req, res){
-		return ActMovie.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
+		return ActTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1419,3 +1428,10 @@ module.exports = function(app) {
 	  });
 	});
 	//--------------------------------TVGrenes END-----------------------------	
+
+	app.get('*', function(req, res) {
+		res.render('index');
+	});
+
+
+};
