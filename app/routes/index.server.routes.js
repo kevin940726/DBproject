@@ -32,11 +32,42 @@ module.exports = function(app) {
 		Character: String
 	});
 
+	var awardSchema = new mongoose.Schema({
+		Award_Id: String,
+		Award_Name: String
+	});
+
+	var awardMovieSchema = new mongoose.Schema({
+		Movie_Id: String,
+		Award_Id: String,
+		Type: String,
+		Year: String
+	});
+
+	var awardPeopleSchema = new mongoose.Schema({
+		People_Id: String,
+		Award_Id: String,
+		Type: String,
+		Year: String,
+		Category: String
+	});
+
+	var awardTVSchema = new mongoose.Schema({
+		Show_Id: String,
+		Award_Id: String,
+		Type: String,
+		Year: String
+	});
+
 	app.use(bodyParser.urlencoded());
 
 	var Movies = mongoose.model('Movies', movieSchema, 'MOVIES');
 	var People = mongoose.model('People', peopleSchema, 'PEOPLE');
-	var ActMovie = mongoose.model('ActMovie', actMovieSchema, 'ACT_MOVIE')
+	var ActMovie = mongoose.model('ActMovie', actMovieSchema, 'ACT_MOVIE');
+	var Award = mongoose.model('Award', awardSchema, 'AWARD');
+	var AwardMovie = mongoose.model('AwardMovie', awardMovieSchema, 'AWARD_MOVIE');
+	var AwardPeople = mongoose.model('AwardPeople', awardPeopleSchema, 'AWARD_PEOPLE');
+	var AwardTV = mongoose.model('AwardTV', awardTVSchema, 'AWARD_TV');
 	mongoose.connect('mongodb://kai:kai41@ds031691.mongolab.com:31691/mydb');
 
 	//GET METHOD.
@@ -303,8 +334,361 @@ module.exports = function(app) {
 	  });
 	});
 
+	//--------------------------------AWARD_MOVIE-----------------------------
+	//GET METHOD OF AWARD_MOVIE.
+	app.get('/api/awardMovie', function(req, res){
+		return AwardMovie.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF AWARD_MOVIE.
+	app.get('/api/awardMovie/:id', function(req, res){
+		return AwardMovie.find({Movie_Id: req.params.id}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID
+	app.get('/api/awardMovie/:mid/:aid/:y', function(req, res){
+		return AwardMovie.findOne({Movie_Id: req.params.mid, Award_Id: req.params.aid, Year: req.params.y}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE AWARD_MOVIE
+	app.post('/api/awardMovie', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new AwardMovie({
+	  	Movie_Id: req.body.Movie_Id,
+	  	Award_Id: req.body.Award_Id,
+		Type: req.body.Type,
+		Year: req.body.Year
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from AWARD_MOVIE
+	app.delete('/api/awardMovie/:mid/:aid/:y', function (req, res) {
+	  return AwardMovie.findOne({Movie_Id: req.params.mid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single award update
+	app.put('/api/awardMovie/:mid/:aid/:y', function (req, res) {
+	  return AwardMovie.findOne({Movie_Id: req.params.mid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
+	  	doc.Movie_Id = req.body.Movie_Id;
+	  	doc.Award_Id = req.body.Award_Id;
+	  	doc.Type = req.body.Type;
+		doc.Year = req.body.Year;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+
+
+
+	//--------------------------------AWARD-----------------------------
+	//GET METHOD.
+	app.get('/api/award', function(req, res){
+		return Award.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID
+	app.get('/api/award/:id', function(req, res){
+		return Award.find({Award_Id: req.params.id}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE
+	app.post('/api/award', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new Award({
+	  	Award_Id: req.body.Award_Id,
+		Award_Name: req.body.Award_Name
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc 
+	app.delete('/api/award/:id', function (req, res) {
+	  return Award.findOne({Award_Id: req.params.id}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single update
+	app.put('/api/award/:id', function (req, res) {
+	  return Award.findOne({Award_Id: req.params.id}, function (err, doc) {
+	  	doc.Award_Id = req.body.Award_Id;
+	  	doc.Award_Name = req.body.Award_Name;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+
+
+	//--------------------------------AWARD_PEOPLE-----------------------------
+	//GET METHOD.
+	app.get('/api/awardPeople', function(req, res){
+		return AwardPeople.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID
+	app.get('/api/awardPeople/:id', function(req, res){
+		return AwardPeople.find({People_Id: req.params.id}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID
+	app.get('/api/awardPeople/:pid/:aid/:y/:c', function(req, res){
+		return AwardPeople.findOne({People_Id: req.params.pid, Award_Id: req.params.aid, Year: req.params.y, Category: req.params.c}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE
+	app.post('/api/awardPeople', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new AwardPeople({
+	  	People_Id: req.body.People_Id,
+	  	Award_Id: req.body.Award_Id,
+		Type: req.body.Type,
+		Year: req.body.Year,
+		Category: req.body.Category
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc
+	app.delete('/api/awardPeople/:pid/:aid/:y/:c', function (req, res) {
+	  return AwardPeople.findOne({People_Id: req.params.pid, Award_Id: req.params.aid, Year: req.params.y, Category: req.params.c}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single update
+	app.put('/api/awardPeople/:pid/:aid/:y/:c', function (req, res) {
+	  return AwardPeople.findOne({People_Id: req.params.pid, Award_Id: req.params.aid, Year: req.params.y, Category: req.params.c}, function (err, doc) {
+	  	doc.People_Id = req.body.People_Id;
+	  	doc.Award_Id = req.body.Award_Id;
+	  	doc.Type = req.body.Type;
+		doc.Year = req.body.Year;
+		doc.Category = req.body.Category;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+
+
+	//--------------------------------AWARD_TV-----------------------------
+	//GET METHOD.
+	app.get('/api/awardTV', function(req, res){
+		return AwardTV.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY TV SHOW ID.
+	app.get('/api/awardTV/:id', function(req, res){
+		return AwardTV.find({Show_Id: req.params.id}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET SINGLE BY SHOW ID, AWARD ID, YEAR.
+	app.get('/api/awardTV/:tid/:aid/:y', function(req, res){
+		return AwardTV.findOne({Show_Id: req.params.tid, Award_Id: req.params.aid, Year: req.params.y}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE
+	app.post('/api/awardTV', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new AwardTV({
+	  	Show_Id: req.body.Show_Id,
+	  	Award_Id: req.body.Award_Id,
+		Type: req.body.Type,
+		Year: req.body.Year
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc
+	app.delete('/api/awardPeople/:tid/:aid/:y', function (req, res) {
+	  return AwardTV.findOne({Show_Id: req.params.tid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single update
+	app.put('/api/awardPeople/:tid/:aid/:y', function (req, res) {
+	  return AwardTV.findOne({Show_Id: req.params.tid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
+	  	doc.Show_Id = req.body.Show_Id;
+	  	doc.Award_Id = req.body.Award_Id;
+	  	doc.Type = req.body.Type;
+		doc.Year = req.body.Year;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+
 	app.get('*', function(req, res) {
 		res.render('index');
 	});
-	
 };

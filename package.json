@@ -8,6 +8,10 @@
   },
   "author": "NTU IM 105",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevin940726/DBproject.git"
+  },
   "dependencies": {
     "body-parser": "^1.10.1",
     "ejs": "^2.1.4",
