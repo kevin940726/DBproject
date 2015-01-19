@@ -83,7 +83,8 @@ module.exports = function(app) {
 	var awardTVSchema = new mongoose.Schema({
 		Show_Id: String,
 		Award_Id: String,
-		Sub_Category: String,//ex.best TV show
+		Category: String,//ex.best TV show
+		Type: String,
 		Year: String
 	});
 
@@ -909,6 +910,7 @@ module.exports = function(app) {
 	  doc = new AwardTV({
 	  	Show_Id: req.body.Show_Id,
 	  	Award_Id: req.body.Award_Id,
+	  	Category: req.body.Category,
 		Type: req.body.Type,
 		Year: req.body.Year
 	  });
@@ -942,6 +944,7 @@ module.exports = function(app) {
 	  return AwardTV.findOne({Show_Id: req.params.tid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.Award_Id = req.body.Award_Id;
+	  	doc.Category = req.body.Category;
 	  	doc.Type = req.body.Type;
 		doc.Year = req.body.Year;
 	    return doc.save(function (err) {
