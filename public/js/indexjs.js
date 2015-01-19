@@ -35,7 +35,12 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     .when('/people/:id', {
       title: ' - IMDb2',
       templateUrl: 'partials/people.html',
-      controller: 'PeopleCtrl',
+      controller: 'PeopleCtrl'
+    })
+    .when('/awards', {
+      title: 'Awards - IMDb2',
+      templateUrl: 'partials/awards.html',
+      controller: 'AwardsCtrl'
     })
 		.otherwise({
 			redirectTo: '/'
@@ -607,3 +612,8 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
     });
   }; 
 }); 
+
+
+index.controller('AwardsCtrl', function($scope, $http) {
+  
+});
