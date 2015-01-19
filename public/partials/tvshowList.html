@@ -104,14 +104,14 @@
 <br></br>
 
 <div class="list-group">
-  <a href="tvshow/{{tvshow.TVshow_Id}}" class="list-group-item thumbnails" ng-repeat="tvshow in tvshows | filter: tvshow_search | startFrom:currentPage*pageSize | limitTo:pageSize" id="tvshow_{{tvshow.TVshow_Id}}" ng-click="submittvshow(tvshow)">
+  <a href="tvshow/{{tv.Show_Id}}" class="list-group-item thumbnails" ng-repeat="tv in tvshow | filter: tvshow_search | startFrom:currentPage*pageSize | limitTo:pageSize" >
     <div class="row container">
       <div class="col-md-1">
-        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{tvshow.Img_Src}}"/>
+        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{tv.Img_Src}}"/>
       </div>
       <div class="col-md-11">
         <h4 class="list-group-item-heading" style="line-height: 65px;">
-          <span class="label label-danger">#{{tvshow.TVshow_Id*1 + 1}}</span> {{tvshow.TVshow_Title}}
+          <span class="label label-danger">{{$index + 1}}</span> {{tv.Title}}
         </h4>
       </div>
     </div>

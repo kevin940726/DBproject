@@ -1,8 +1,5 @@
 var index = angular.module('index', ['ngRoute']);
 
-index.value('duScrollDuration', 2000);
-index.value('duScrollOffset', 30);
-
 index.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/', {
@@ -23,7 +20,13 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     .when('/tvshow', {
       title: 'TV Show List- IMDb2',
       templateUrl : 'partials/tvshowList.html',
+      controller  : 'TVShowListCtrl'
+    })
+    .when('/tvshow/:id', {
+      title: ' - IMDb2',
+      templateUrl : 'partials/tvshows.html',
       controller  : 'TVShowCtrl'
+    })
     .when('/people', {
       title: 'People List - IMDb2',
       templateUrl: 'partials/peopleList.html',
@@ -335,8 +338,8 @@ index.controller('PeopleListCtrl', function($scope, $http, $window) {
   };     
 });
 
-index.controller('TVshowListCtrl', function ($scope, $http, $window) {
-  $http.get('/api/tvshows').success(function(data) {
+index.controller('TVShowListCtrl', function ($scope, $http, $window) {
+  $http.get('/api/tvshow').success(function(data) {
       $scope.tvshow = data;
   });
   $scope.currentPage = 0;
@@ -357,7 +360,7 @@ index.controller('TVshowListCtrl', function ($scope, $http, $window) {
   $scope.submitForm = function() {
     $http({
       method: 'POST',
-      url: 'api/tvshows',
+      url: 'api/tvshow',
       data: $.param({
         TVshow_Id: $scope.form.TVshowId,
         TVshow_Title: $scope.form.TVshowTitle,
@@ -438,5 +441,169 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     }).success(function() {
       $window.location.href = '/people/'+id;
     })
+  }; 
+}); 
+
+index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
+  $http.get('/api/tvshow').success(function(data) {
+    $scope.tvshows = data;
+    $scope.total = data.length;
+  });
+  $http.get('api/people').success(function(data) {
+    $scope.people = data;
+  });
+  $http.get('api/awardTV/'+$routeParams.id).success(function(data){
+    $scope.awards = data;
+  });
+  $http.get('api/award').success(function(data){
+    $scope.awardsName = data;
+  });
+  $http.get('/api/tvshow/'+$routeParams.id).success(function(data) {
+    if (data.length !== 0) $scope.tvshow = data;
+    else $location.path("/tvshow");
+
+    $rootScope.title = $scope.tvshow.Title + " - IMDb2";
+    $scope.formset($scope.tvshow);
+    $http.get('api/actTVShow/'+$routeParams.id).success(function(data) {
+      $scope.acts = data;
+    })
+  }); 
+  $scope.removeTVshow = function(data) {
+    var id = data.Show_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/tvshow/'+id,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $location.path("/tvshow");
+    });
+  };
+  $scope.formset = function(data) {
+    $scope.form = {
+      Show_Id: data.Show_Id,
+      Title: data.Title,
+      Season: data.Season,
+      Length: data.Length,
+      Img_Src: data.Img_Src,
+      Description: data.Description,
+      Country: data.Country,
+      Language: data.Language,
+      Company: data.Company,
+      Start_Year: data.Start_Year,
+      End_Year: data.End_Year,
+      Rating: data.Rating,
+    };
+  };
+  $scope.updateTVshow = function(data) {
+    var id = data.Show_Id;
+    $http({
+      method: 'PUT',
+      url: 'api/tvshow/'+id,
+      data: $.param({
+        People_Id: $scope.form.People_Id,
+        People_Name: $scope.form.People_Name,
+        Birth_Date: $scope.form.Birth_Date,
+        Country: $scope.form.Country,
+        Img_Src: $scope.form.Img_Src,
+        Description: $scope.form.Description
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshow/'+id;
+    })
+  };
+  $scope.updateAct = function() {
+    var mid = $routeParams.id;
+    var pid = $scope.form2.People_Id;
+    $http.get('api/actTVShow/'+mid+'/'+pid).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/actTVShow/'+mid+'/'+pid,
+          data: $.param({
+            Show_Id: mid,
+            People_Id: pid,
+            Character: $scope.form2.Character
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/actTVShow/',
+          data: $.param({
+            Show_Id: mid,
+            People_Id: pid,
+            Character: $scope.form2.Character
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+    });
+  };
+  $scope.deleteAct = function(data) {
+    var mid = data.Show_Id;
+    var pid = data.People_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/actTVShow/'+mid+'/'+pid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshow/'+mid;
+    });
+  };
+  $scope.updateAward = function() {
+    var mid = $routeParams.id;
+    var aid = $scope.form3.Award_Id;
+    var y = $scope.form3.Year;
+    $http.get('api/awardTV/'+mid+'/'+aid+'/'+y).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/awardTV/'+mid+'/'+aid+'/'+y,
+          data: $.param({
+            Show_Id: mid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/awardTV/',
+          data: $.param({
+            Show_Id: mid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var mid = data.Show_Id;
+    var aid = data.Award_Id;
+    var y = data.Year;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardTV/'+mid+'/'+aid+'/'+y,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshow/'+mid;
+    });
   }; 
 }); 
