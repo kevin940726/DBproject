@@ -21,14 +21,12 @@ module.exports = function(app) {
 
 	var TVShowSchema = new mongoose.Schema({
 		Show_Id: String,
-		Show_Title: String,
+		Title: String,
 		Season: String,
 		Length: Number,
 		Img_Src: String,
-		Description: String,
 		Country: String,
 		Language: String,
-		Company: String,
 		Start_Year: String,
 		End_Year: String,
 		Rating: Number
@@ -265,14 +263,13 @@ module.exports = function(app) {
 	  console.log(req.body);
 	  tvshow = new TVShow({
 	  	Show_Id: req.body.Show_Id,
-		Show_Title: req.body.Show_Title,
+		Title: req.body.Title,
 		Season: req.body.Season,
 		Length: req.body.Length,
 		Img_Src: req.body.Img_Src,
 		Description: req.body.Description,
 		Country: req.body.Country,
 		Language: req.body.Language,
-		Company: req.body.Company,
 		Start_Year:req.body.Start_Year,
 		End_Year: req.body.End_Year,
 		Rating: req.body.Rating,
@@ -306,14 +303,13 @@ module.exports = function(app) {
 	app.put('/api/tvshow/:id', function (req, res) {
 	  return TVShow.findOne({Show_Id: req.params.id}, function (err, tvshow) {
 	  	tvshow.Show_Id = req.body.Show_Id;
-		tvshow.Show_Title = req.body.Show_Title;
+		tvshow.Title = req.body.Title;
 		tvshow.Season = req.body.Season;
 		tvshow.Length = req.body.Length;
 		tvshow.Img_Src = req.body.Img_Src;
 		tvshow.Description = req.body.Description;
 		tvshow.Country = req.body.Country;
 		tvshow.Language = req.body.Language;
-		tvshow.Company = req.body.Company;
 		tvshow.Rating = req.body.Rating;
 		tvshow.Start_Year = req.body.Start_Year;
 		tvshow.End_Year = req.body.End_Year;
