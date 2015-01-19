@@ -97,6 +97,7 @@ module.exports = function(app) {
 	var Direct_TVSchema = new mongoose.Schema({
 		People_ID: String,
 		Show_Id: String,
+		Episode: Number,
 	})
 
 	var Write_MovieSchema = new mongoose.Schema({
@@ -1083,7 +1084,8 @@ module.exports = function(app) {
 	  console.log(req.body);
 	  doc = new DirectTV({
 	  	Show_Id: req.body.Show_Id,
-	  	People_Id: req.body.People_Id
+	  	People_Id: req.body.People_Id,
+	  	Episode: req.body.Episode
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1115,6 +1117,7 @@ module.exports = function(app) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.People_Id = req.body.People_Id;
+	  	doc.Episode = req.body.Episode;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
