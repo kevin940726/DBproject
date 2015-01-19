@@ -35,10 +35,11 @@ module.exports = function(app) {
 	var TVShowDetailSchema = new mongoose.Schema({
 		Show_Id: String,
 		Show_Title: String,
-		Language: String,
+		Release_Date: String,
 		Season: String,
 		Rating: Number,
-		Episode: Number,
+		Episode: String,
+		Description: String
 	})
 
 	var peopleSchema = new mongoose.Schema({
@@ -340,8 +341,8 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY ID.
-	app.get('/api/tvshowdetail/:id', function(req, res){
-		return TVShowDetail.findOne({Show_Id: req.params.id}, function(err, tvshowdetail){
+	app.get('/api/tvshowdetail/:sid/:nid/:eid', function(req, res){
+		return TVShowDetail.findOne({Show_Id: req.params.sid, Season: req.params.nid, Episode: req.params.eid}, function(err, tvshowdetail){
 			if(!err){
 				return res.send(tvshow);
 			}
@@ -356,13 +357,15 @@ module.exports = function(app) {
 	  var tvshowdetail;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  tvshow = new TVShow({
+	  tvshow = new TVShowDetail({
 	  	Show_Id: req.body.Show_Id,
-		Show_Title: req.body.Show_Title,
+		Title: req.body.Title,
 		Season: req.body.Season,
-		Language: req.body.Language,
+		Release_Date: req.body.Release_Date,
 		Rating: req.body.Rating,
-		Episode: req.body.Episode
+		Episode: req.body.Episode,
+		Description: req.body.Description
+
 	  });
 	  tvshowdetail.save(function (err) {
 	    if (!err) {
@@ -375,8 +378,8 @@ module.exports = function(app) {
 	});
 
 	// remove a single product Q:WHERE DOES THE ORANGE VARIABLE tvshow COME FROM?
-	app.delete('/api/tvshowdetail/:id', function (req, res) {
-	  return TVShowDetail.findOne({Show_Id: req.params.id}, function (err, tvshowdetail) {
+	app.delete('/api/tvshowdetail/:sid/:nid/:eid', function (req, res) {
+	  return TVShowDetail.findOne({Show_Id: req.params.sid, Season: req.params.nid, Episode: req.params.eid}, function (err, tvshowdetail) {
 	  	console.log(tvshowdetail);
 	    return tvshowdetail.remove(function (err) {
 	      if (!err) {
@@ -390,16 +393,17 @@ module.exports = function(app) {
 	});
 
 	// Single update
-	app.put('/api/tvshowdetail/:id', function (req, res) {
-	  return TVShowDetail.findOne({Show_Id: req.params.id}, function (err, tvshowdetail) {
+	app.put('/api/tvshowdetail/:sid/:nid/:eid', function (req, res) {
+	  return TVShowDetail.findOne({Show_Id: req.params.sid, Season: req.params.nid, Episode: req.params.eid}, function (err, tvshowdetail) {
 	  	tvshowdetail.Show_Id = req.body.Show_Id;
-		tvshowdetail.Show_Title = req.body.Show_Title;
+		tvshowdetail.Title = req.body.Title;
 		tvshowdetail.Season = req.body.Season;
 		
-		tvshowdetail.Language = req.body.Language;
+		tvshowdetail.Release_Date = req.body.Release_Date;
 		
 		tvshowdetail.Rating = req.body.Rating;
 		tvshowdetail.Episode= req.body.Episode;
+		tvshowdetail.Description = req.body.Description;
 		
 	    return tvshowdetail.save(function (err) {
 	      if (!err) {
