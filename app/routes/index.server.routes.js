@@ -59,7 +59,9 @@ module.exports = function(app) {
 
 	var awardSchema = new mongoose.Schema({
 		Award_Id: String,
-		Award_Name: String
+		Award_Name: String,
+		Img_Src: String,
+		Description: String
 	});
 
 	var awardMovieSchema = new mongoose.Schema({
@@ -719,7 +721,9 @@ module.exports = function(app) {
 	  console.log(req.body);
 	  doc = new Award({
 	  	Award_Id: req.body.Award_Id,
-		Award_Name: req.body.Award_Name
+		Award_Name: req.body.Award_Name,
+		Img_Src: req.body.Img_Src,
+		Description: req.body.Description
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -751,6 +755,8 @@ module.exports = function(app) {
 	  return Award.findOne({Award_Id: req.params.id}, function (err, doc) {
 	  	doc.Award_Id = req.body.Award_Id;
 	  	doc.Award_Name = req.body.Award_Name;
+	  	doc.Img_Src = req.body.Img_Src;
+	  	doc.Description = req.body.Description;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
