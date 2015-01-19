@@ -75,7 +75,8 @@ module.exports = function(app) {
 	var awardPeopleSchema = new mongoose.Schema({
 		People_Id: String,
 		Award_Id: String,
-		Sub_Category: String,//ex.best male actor
+		Category: String,//ex.best male actor
+		Type: String,
 		Year: String
 	});
 
