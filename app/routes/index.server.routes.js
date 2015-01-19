@@ -31,8 +31,7 @@ module.exports = function(app) {
 		Company: String,
 		Start_Year: String,
 		End_Year: String,
-		Rating: Number,
-
+		Rating: Number
 	})
 
 	var TVShowDetailSchema = new mongoose.Schema({
@@ -56,8 +55,7 @@ module.exports = function(app) {
 	var actMovieSchema = new mongoose.Schema({
 		Movie_Id: String,
 		People_Id: String,
-		ategory: String,
-		Character_Name: String
+		Character: String
 	});
 
 	var awardSchema = new mongoose.Schema({
@@ -90,7 +88,6 @@ module.exports = function(app) {
 	var actTVShowSchema = new mongoose.Schema({
 		Show_Id: String,
 		People_Id: String,
-		Category: String,
 		Character: String
 	});
 
@@ -128,7 +125,7 @@ module.exports = function(app) {
 	var TVShow = mongoose.model('TVShow', TVShowSchema, 'TV');
 	var TVShowDetail = mongoose.model('TVShowDetail', TVShowDetailSchema, 'TV_DETAIL');
 	var ActMovie = mongoose.model('ActMovie', actMovieSchema, 'ACT_MOVIE');
-	var ActTVShow = mongoose.model('ActTVShow', actMovieSchema, 'ACT_TV');
+	var ActTVShow = mongoose.model('ActTVShow', actTVShowSchema, 'ACT_TV');
 	var DirectTV = mongoose.model('DirectTV', Direct_TVSchema, 'DIRECT_TV');
 	var WriteMovie = mongoose.model('WriteMovie', Write_MovieSchema, 'WRITE_MOVIE');
 	var WriteTVShow = mongoose.model('WriteTVShow', Write_TVShowSchema, 'WRITE_TV');
@@ -919,7 +916,7 @@ module.exports = function(app) {
 	});
 
 	//remove a single doc
-	app.delete('/api/awardPeople/:tid/:aid/:y', function (req, res) {
+	app.delete('/api/awardTV/:tid/:aid/:y', function (req, res) {
 	  return AwardTV.findOne({Show_Id: req.params.tid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
@@ -934,7 +931,7 @@ module.exports = function(app) {
 	});
 
 	//Single update
-	app.put('/api/awardPeople/:tid/:aid/:y', function (req, res) {
+	app.put('/api/awardTV/:tid/:aid/:y', function (req, res) {
 	  return AwardTV.findOne({Show_Id: req.params.tid, Award_Id: req.params.aid, Year: req.params.y}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.Award_Id = req.body.Award_Id;
@@ -999,9 +996,7 @@ module.exports = function(app) {
 	  doc = new ActTVShow({
 	  	Show_Id: req.body.Show_Id,
 	  	People_Id: req.body.People_Id,
-		Character: req.body.Character,
-		Category: req.body.Category
-
+		Character: req.body.Character
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1034,7 +1029,6 @@ module.exports = function(app) {
 	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.People_Id = req.body.People_Id;
 		doc.Character = req.body.Character;
-		doc.Category = req.body.Category;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");

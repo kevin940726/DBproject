@@ -464,7 +464,7 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
 
     $rootScope.title = $scope.tvshow.Title + " - IMDb2";
     $scope.formset($scope.tvshow);
-    $http.get('api/actTVshow/'+$routeParams.id).success(function(data) {
+    $http.get('api/actTVShow/'+$routeParams.id).success(function(data) {
       $scope.acts = data;
     })
   }); 
@@ -480,12 +480,18 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
   };
   $scope.formset = function(data) {
     $scope.form = {
-      People_Id: data.People_Id,
-      People_Name: data.People_Name,
-      Birth_Date: data.Birth_Date,
-      Country: data.Country,
+      Show_Id: data.Show_Id,
+      Title: data.Title,
+      Season: data.Season,
+      Length: data.Length,
       Img_Src: data.Img_Src,
-      Description: data.Description
+      Description: data.Description,
+      Country: data.Country,
+      Language: data.Language,
+      Company: data.Company,
+      Start_Year: data.Start_Year,
+      End_Year: data.End_Year,
+      Rating: data.Rating,
     };
   };
   $scope.updateTVshow = function(data) {
@@ -505,5 +511,99 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
     }).success(function() {
       $window.location.href = '/tvshow/'+id;
     })
+  };
+  $scope.updateAct = function() {
+    var mid = $routeParams.id;
+    var pid = $scope.form2.People_Id;
+    $http.get('api/actTVShow/'+mid+'/'+pid).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/actTVShow/'+mid+'/'+pid,
+          data: $.param({
+            Show_Id: mid,
+            People_Id: pid,
+            Character: $scope.form2.Character
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/actTVShow/',
+          data: $.param({
+            Show_Id: mid,
+            People_Id: pid,
+            Character: $scope.form2.Character
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+    });
+  };
+  $scope.deleteAct = function(data) {
+    var mid = data.Show_Id;
+    var pid = data.People_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/actTVShow/'+mid+'/'+pid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshow/'+mid;
+    });
+  };
+  $scope.updateAward = function() {
+    var mid = $routeParams.id;
+    var aid = $scope.form3.Award_Id;
+    var y = $scope.form3.Year;
+    $http.get('api/awardTV/'+mid+'/'+aid+'/'+y).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/awardTV/'+mid+'/'+aid+'/'+y,
+          data: $.param({
+            Show_Id: mid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/awardTV/',
+          data: $.param({
+            Show_Id: mid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/tvshow/'+mid;
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var mid = data.Show_Id;
+    var aid = data.Award_Id;
+    var y = data.Year;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardTV/'+mid+'/'+aid+'/'+y,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshow/'+mid;
+    });
   }; 
 }); 
