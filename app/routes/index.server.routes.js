@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 module.exports = function(app) {
     //var index = require('../controllers/index.server.controller');
 
+/*-----------------------schemas START-----------------------*/
 	var movieSchema = new mongoose.Schema({
 		Movie_Id: String,
 		Movie_Title: String,
@@ -15,7 +16,33 @@ module.exports = function(app) {
 		Country: String,
 		Language: String,
 		Company: String
+
 	});
+
+	var TVShowSchema = new mongoose.Schema({
+		Show_Id: String,
+		Show_Title: String,
+		Season: String,
+		Length: Number,
+		Img_Src: String,
+		Description: String,
+		Country: String,
+		Language: String,
+		Company: String,
+		Start_Year: String,
+		End_Year: String,
+		Rating: Number,
+
+	})
+
+	var TVShowDetailSchema = new mongoose.Schema({
+		Show_Id: String,
+		Show_Title: String,
+		Language: String,
+		Season: String,
+		Rating: Number,
+		Episode: Number,
+	})
 
 	var peopleSchema = new mongoose.Schema({
 		People_Id: String,
@@ -29,7 +56,8 @@ module.exports = function(app) {
 	var actMovieSchema = new mongoose.Schema({
 		Movie_Id: String,
 		People_Id: String,
-		Character: String
+		ategory: String,
+		Character_Name: String
 	});
 
 	var awardSchema = new mongoose.Schema({
@@ -40,36 +68,81 @@ module.exports = function(app) {
 	var awardMovieSchema = new mongoose.Schema({
 		Movie_Id: String,
 		Award_Id: String,
-		Type: String,
+		Sub_Category: String,//ex.best male actor
 		Year: String
+
 	});
 
 	var awardPeopleSchema = new mongoose.Schema({
 		People_Id: String,
 		Award_Id: String,
-		Type: String,
-		Year: String,
-		Category: String
+		Sub_Category: String,//ex.best male actor
+		Year: String
 	});
 
 	var awardTVSchema = new mongoose.Schema({
 		Show_Id: String,
 		Award_Id: String,
-		Type: String,
+		Sub_Category: String,//ex.best TV show
 		Year: String
 	});
+
+	var actTVShowSchema = new mongoose.Schema({
+		Show_Id: String,
+		People_Id: String,
+		Category: String,
+		Character: String
+	});
+
+	var Direct_TVSchema = new mongoose.Schema({
+		People_ID: String,
+		Show_Id: String,
+	})
+
+	var Write_MovieSchema = new mongoose.Schema({
+		People_Id: String,
+		Movie_Id: String,
+	})
+
+	var Write_TVShowSchema = new mongoose.Schema({
+		People_Id: String,
+		Show_Id: String,
+	})
+
+	var Movie_GrenesSchema = new mongoose.Schema({
+		Movie_Id: String,
+		Grenes: String,
+	})
+
+	var TV_GrenesSchema = new mongoose.Schema({
+		Show_Id: String,
+		Grenes: String,
+	})
+
+/*-----------------------schemas END-----------------------*/
 
 	app.use(bodyParser.urlencoded());
 
 	var Movies = mongoose.model('Movies', movieSchema, 'MOVIES');
 	var People = mongoose.model('People', peopleSchema, 'PEOPLE');
+	var TVShow = mongoose.model('TVShow', TVShowSchema, 'TV');
+	var TVShowDetail = mongoose.model('TVShowDetail', TVShowDetailSchema, 'TV_DETAIL');
 	var ActMovie = mongoose.model('ActMovie', actMovieSchema, 'ACT_MOVIE');
+	var ActTVShow = mongoose.model('ActTVShow', actMovieSchema, 'ACT_TV');
+	var DirectTV = mongoose.model('DirectTV', Direct_TVSchema, 'DIRECT_TV');
+	var WriteMovie = mongoose.model('WriteMovie', Write_MovieSchema, 'WRITE_MOVIE');
+	var WriteTVShow = mongoose.model('WriteTVShow', Write_TVShowSchema, 'WRITE_TV');
+	var MovieGrenes = mongoose.model('MovieGrenes', Movie_GrenesSchema, 'MOVIE_GRENES');
+	var TVGrenes = mongoose.model('TVGrenes', TV_GrenesSchema, 'TV_GRENES');
 	var Award = mongoose.model('Award', awardSchema, 'AWARD');
 	var AwardMovie = mongoose.model('AwardMovie', awardMovieSchema, 'AWARD_MOVIE');
 	var AwardPeople = mongoose.model('AwardPeople', awardPeopleSchema, 'AWARD_PEOPLE');
 	var AwardTV = mongoose.model('AwardTV', awardTVSchema, 'AWARD_TV');
+
 	mongoose.connect('mongodb://kai:kai41@ds031691.mongolab.com:31691/mydb');
 
+
+	//--------------------------------MOVIE START-----------------------------
 	//GET METHOD.
 	app.get('/api/movies', function(req, res){
 		return Movies.find(function(err, movie){
@@ -114,7 +187,7 @@ module.exports = function(app) {
 	  });
 	  movie.save(function (err) {
 	    if (!err) {
-	      return console.log("created");
+	      return console.log("created a new movie!");
 	    } else {
 	      return console.log(err);
 	    }
@@ -161,8 +234,195 @@ module.exports = function(app) {
 	    });
 	  });
 	});
+	//--------------------------------MOVIE END-----------------------------
 
-	//--------------------------------PEOPLE-----------------------------
+	//--------------------------------TV START-----------------------------
+	//GET METHOD.
+	app.get('/api/tvshow', function(req, res){
+		return TVShow.find(function(err, tvshow){
+			if(!err){
+				return res.send(tvshow);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID.
+	app.get('/api/tvshow/:id', function(req, res){
+		return TVShow.findOne({Show_Id: req.params.id}, function(err, tvshow){
+			if(!err){
+				return res.send(tvshow);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	// POST to CREATE
+	app.post('/api/tvshow', function (req, res) {
+	  var tvshow;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  tvshow = new TVShow({
+	  	Show_Id: req.body.Show_Id,
+		Show_Title: req.body.Show_Title,
+		Season: req.body.Season,
+		Length: req.body.Length,
+		Img_Src: req.body.Img_Src,
+		Description: req.body.Description,
+		Country: req.body.Country,
+		Language: req.body.Language,
+		Company: req.body.Company,
+		Start_Year:req.body.Start_Year,
+		End_Year: req.body.End_Year,
+		Rating: req.body.Rating,
+	  });
+	  tvshow.save(function (err) {
+	    if (!err) {
+	      return console.log("created a new TV Show!");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(tvshow);
+	});
+
+	// remove a single product Q:WHERE DOES THE ORANGE VARIABLE tvshow COME FROM?
+	app.delete('/api/tvshow/:id', function (req, res) {
+	  return TVShow.findOne({Show_Id: req.params.id}, function (err, tvshow) {
+	  	console.log(tvshow);
+	    return tvshow.remove(function (err) {
+	      if (!err) {
+	        console.log("removed a TV Show");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	// Single update
+	app.put('/api/tvshow/:id', function (req, res) {
+	  return TVShow.findOne({Show_Id: req.params.id}, function (err, tvshow) {
+	  	tvshow.Show_Id = req.body.Show_Id;
+		tvshow.Show_Title = req.body.Show_Title;
+		tvshow.Season = req.body.Season;
+		tvshow.Length = req.body.Length;
+		tvshow.Img_Src = req.body.Img_Src;
+		tvshow.Description = req.body.Description;
+		tvshow.Country = req.body.Country;
+		tvshow.Language = req.body.Language;
+		tvshow.Company = req.body.Company;
+		tvshow.Rating = req.body.Rating;
+		tvshow.Start_Year = req.body.Start_Year;
+		tvshow.End_Year = req.body.End_Year;
+		
+	    return tvshow.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(tvshow);
+	    });
+	  });
+	});
+	//--------------------------------TV END-----------------------------
+
+	//--------------------------------TV DETAIL START-----------------------------
+	//GET METHOD.
+	app.get('/api/tvshowdetail', function(req, res){
+		return TVShowDetail.find(function(err, tvshowdetail){
+			if(!err){
+				return res.send(tvshowdetail);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID.
+	app.get('/api/tvshowdetail/:id', function(req, res){
+		return TVShowDetail.findOne({Show_Id: req.params.id}, function(err, tvshowdetail){
+			if(!err){
+				return res.send(tvshow);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	// POST to CREATE
+	app.post('/api/tvshowdetail', function (req, res) {
+	  var tvshowdetail;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  tvshow = new TVShow({
+	  	Show_Id: req.body.Show_Id,
+		Show_Title: req.body.Show_Title,
+		Season: req.body.Season,
+		Language: req.body.Language,
+		Rating: req.body.Rating,
+		Episode: req.body.Episode
+	  });
+	  tvshowdetail.save(function (err) {
+	    if (!err) {
+	      return console.log("created a new TV Show Detail!");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(tvshowdetail);
+	});
+
+	// remove a single product Q:WHERE DOES THE ORANGE VARIABLE tvshow COME FROM?
+	app.delete('/api/tvshowdetail/:id', function (req, res) {
+	  return TVShowDetail.findOne({Show_Id: req.params.id}, function (err, tvshowdetail) {
+	  	console.log(tvshowdetail);
+	    return tvshowdetail.remove(function (err) {
+	      if (!err) {
+	        console.log("removed a TV Show Detail");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	// Single update
+	app.put('/api/tvshowdetail/:id', function (req, res) {
+	  return TVShowDetail.findOne({Show_Id: req.params.id}, function (err, tvshowdetail) {
+	  	tvshowdetail.Show_Id = req.body.Show_Id;
+		tvshowdetail.Show_Title = req.body.Show_Title;
+		tvshowdetail.Season = req.body.Season;
+		
+		tvshowdetail.Language = req.body.Language;
+		
+		tvshowdetail.Rating = req.body.Rating;
+		tvshowdetail.Episode= req.body.Episode;
+		
+	    return tvshowdetail.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(tvshowdetail);
+	    });
+	  });
+	});
+
+	//--------------------------------TV DETAIL END-----------------------------
+
+
+	//--------------------------------PEOPLE START-----------------------------
 	//GET METHOD OF PEOPLE.
 	app.get('/api/people', function(req, res){
 		return People.find(function(err, people){
@@ -244,8 +504,10 @@ module.exports = function(app) {
 	    });
 	  });
 	});
+	//--------------------------------PEOPLE START-----------------------------
 
-	//--------------------------------ACT_MOVIE-----------------------------
+
+	//--------------------------------ACT_MOVIE START-----------------------------
 	//GET METHOD OF ACT_MOVIE.
 	app.get('/api/actMovie', function(req, res){
 		return ActMovie.find(function(err, doc){
@@ -258,17 +520,17 @@ module.exports = function(app) {
 		});
 	});
 
-	//GET METHOD BY MOVIE ID OF ACT_MOVIE.
-	app.get('/api/actMovie/:id', function(req, res){
-		return ActMovie.find({Movie_Id: req.params.id}, function(err, doc){
-			if(!err){
-				return res.send(doc);
-			}
-			else{
-				return res.send("Error!");
-			}
-		});
-	});
+	// 這一段好像跟下面的差不多但是是錯的//GET METHOD BY MOVIE ID OF ACT_MOVIE. 
+	// app.get('/api/actMovie/:id', function(req, res){
+	// 	return ActMovie.find({Movie_Id: req.params.id}, function(err, doc){
+	// 		if(!err){
+	// 			return res.send(doc);
+	// 		}
+	// 		else{
+	// 			return res.send("Error!");
+	// 		}
+	// 	});
+	// });
 
 	//GET METHOD BY MOVIE ID OF ACT_MOVIE.
 	app.get('/api/actMovie/:mid/:pid', function(req, res){
@@ -333,8 +595,9 @@ module.exports = function(app) {
 	    });
 	  });
 	});
+	//--------------------------------ACT_MOVIE END-----------------------------
 
-	//--------------------------------AWARD_MOVIE-----------------------------
+	//--------------------------------AWARD_MOVIE START-----------------------------
 	//GET METHOD OF AWARD_MOVIE.
 	app.get('/api/awardMovie', function(req, res){
 		return AwardMovie.find(function(err, doc){
@@ -424,10 +687,10 @@ module.exports = function(app) {
 	    });
 	  });
 	});
+	//--------------------------------AWARD_MOVIE END-----------------------------
 
 
-
-	//--------------------------------AWARD-----------------------------
+	//--------------------------------AWARD START-----------------------------
 	//GET METHOD.
 	app.get('/api/award', function(req, res){
 		return Award.find(function(err, doc){
@@ -501,9 +764,9 @@ module.exports = function(app) {
 	    });
 	  });
 	});
+	//--------------------------------AWARD END-----------------------------
 
-
-	//--------------------------------AWARD_PEOPLE-----------------------------
+	//--------------------------------AWARD_PEOPLE START-----------------------------
 	//GET METHOD.
 	app.get('/api/awardPeople', function(req, res){
 		return AwardPeople.find(function(err, doc){
@@ -595,9 +858,9 @@ module.exports = function(app) {
 	    });
 	  });
 	});
+	//--------------------------------AWARD_PEOPLE END-----------------------------
 
-
-	//--------------------------------AWARD_TV-----------------------------
+	//--------------------------------AWARD_TV START-----------------------------
 	//GET METHOD.
 	app.get('/api/awardTV', function(req, res){
 		return AwardTV.find(function(err, doc){
@@ -692,3 +955,163 @@ module.exports = function(app) {
 		res.render('index');
 	});
 };
+	//--------------------------------AWARD_TV END-----------------------------
+
+	//--------------------------------ACT_TV START-----------------------------
+	//GET METHOD OF ACT_TV.
+	app.get('/api/actTVShow', function(req, res){
+		return ActTVShow.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF ACT_TV.
+	app.get('/api/actTVShow/:sid/:pid', function(req, res){
+		return ActMovie.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE ACT_TV
+	app.post('/api/actTVShow', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new ActTVShow({
+	  	Show_Id: req.body.Show_Id,
+	  	People_Id: req.body.People_Id,
+		Character: req.body.Character,
+		Category: req.body.Category
+
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created an new actTVShow");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from ACT_TV
+	app.delete('/api/actTVShow/:sid/:pid', function (req, res) {
+	  return ActTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed an actTVShow");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single act update
+	app.put('/api/actTVShow/:mid/:pid', function (req, res) {
+	  return ActTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  	doc.Show_Id = req.body.Show_Id;
+	  	doc.People_Id = req.body.People_Id;
+		doc.Character = req.body.Character;
+		doc.Category = req.body.Category;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+	//--------------------------------ACT_TV END-----------------------------
+
+	//--------------------------------DirectTV START-----------------------------
+	//GET METHOD OF DirectTV.
+	app.get('/api/driectTV', function(req, res){
+		return DirectTV.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF DirectTV.
+	app.get('/api/driectTV/:sid/:pid', function(req, res){
+		return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE DIRECT_TV
+	app.post('/api/driectTV', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new DirectTV({
+	  	Show_Id: req.body.Show_Id,
+	  	People_Id: req.body.People_Id
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created an new directTV");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from DIRECT_TV
+	app.delete('/api/driectTV/:sid/:pid', function (req, res) {
+	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed an directTV");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single act update
+	app.put('/api/driectTV/:mid/:pid', function (req, res) {
+	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  	doc.Show_Id = req.body.Show_Id;
+	  	doc.People_Id = req.body.People_Id;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+
+	//--------------------------------DirectTV END-----------------------------
+
