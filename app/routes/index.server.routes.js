@@ -110,14 +110,14 @@ module.exports = function(app) {
 		Show_Id: String,
 	})
 
-	var Movie_GrenesSchema = new mongoose.Schema({
+	var Movie_GenresSchema = new mongoose.Schema({
 		Movie_Id: String,
-		Grenes: String,
+		Genres: String,
 	})
 
-	var TV_GrenesSchema = new mongoose.Schema({
+	var TV_GenresSchema = new mongoose.Schema({
 		Show_Id: String,
-		Grenes: String,
+		Genres: String,
 	})
 
 /*-----------------------schemas END-----------------------*/
@@ -133,8 +133,8 @@ module.exports = function(app) {
 	var DirectTV = mongoose.model('DirectTV', Direct_TVSchema, 'DIRECT_TV');
 	var WriteMovie = mongoose.model('WriteMovie', Write_MovieSchema, 'WRITE_MOVIE');
 	var WriteTVShow = mongoose.model('WriteTVShow', Write_TVShowSchema, 'WRITE_TV');
-	var MovieGrenes = mongoose.model('MovieGrenes', Movie_GrenesSchema, 'MOVIE_GRENES');
-	var TVGrenes = mongoose.model('TVGrenes', TV_GrenesSchema, 'TV_GRENES');
+	var MovieGenres = mongoose.model('Moviegenres', Movie_GenresSchema, 'MOVIE_GENRES');
+	var TVGenres = mongoose.model('TVgenres', TV_GenresSchema, 'TV_GENRES');
 	var Award = mongoose.model('Award', awardSchema, 'AWARD');
 	var AwardMovie = mongoose.model('AwardMovie', awardMovieSchema, 'AWARD_MOVIE');
 	var AwardPeople = mongoose.model('AwardPeople', awardPeopleSchema, 'AWARD_PEOPLE');
@@ -1145,8 +1145,8 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF WriteMovie.
-	app.get('/api/writeMovie/:sid/:pid', function(req, res){
-		return WriteMovie.findOne({People_Id: req.params.sid, Movie_Id: req.params.pid}, function(err, doc){
+	app.get('/api/writeMovie/:mid/:pid', function(req, res){
+		return WriteMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1176,8 +1176,8 @@ module.exports = function(app) {
 	});
 
 	//remove a single doc from WriteMovie
-	app.delete('/api/writeMovie/:sid/:pid', function (req, res) {
-	  return WriteMovie.findOne({People_Id: req.params.sid, Movie_Id: req.params.pid}, function (err, doc) {
+	app.delete('/api/writeMovie/:mid/:pid', function (req, res) {
+	  return WriteMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1192,7 +1192,7 @@ module.exports = function(app) {
 
 	//Single act update
 	app.put('/api/writeMovie/:mid/:pid', function (req, res) {
-	  return WriteMovie.findOne({People_Id: req.params.sid, Movie_Id: req.params.pid}, function (err, doc) {
+	  return WriteMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.People_Id = req.body.People_Id;
 	  	doc.Movie_Id = req.body.Movie_Id;
 	    return doc.save(function (err) {
@@ -1222,7 +1222,7 @@ module.exports = function(app) {
 
 	//GET METHOD BY TVShow ID OF WriteTV.
 	app.get('/api/writeTV/:sid/:pid', function(req, res){
-		return WriteTV.findOne({People_Id: req.params.sid, Show_Id: req.params.pid}, function(err, doc){
+		return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1253,7 +1253,7 @@ module.exports = function(app) {
 
 	//remove a single doc from WriteTV
 	app.delete('/api/writeTV/:sid/:pid', function (req, res) {
-	  return WriteTV.findOne({People_Id: req.params.sid, Show_Id: req.params.pid}, function (err, doc) {
+	  return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1267,8 +1267,8 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/writeTV/:mid/:pid', function (req, res) {
-	  return WriteTV.findOne({People_Id: req.params.sid, Show_Id: req.params.pid}, function (err, doc) {
+	app.put('/api/writeTV/:sid/:pid', function (req, res) {
+	  return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.People_Id = req.body.People_Id;
 	  	doc.Show_Id = req.body.Show_Id;
 	    return doc.save(function (err) {
@@ -1286,7 +1286,7 @@ module.exports = function(app) {
 
 	//--------------------------------MovieGenre START-----------------------------
 	//GET METHOD OF WriteTV.
-	app.get('/api/movieGrenes', function(req, res){
+	app.get('/api/moviegenres', function(req, res){
 		return MovieGenre.find(function(err, doc){
 			if(!err){
 				return res.send(doc);
@@ -1297,9 +1297,9 @@ module.exports = function(app) {
 		});
 	});
 
-	//GET METHOD BY MOVIE ID OF MovieGrenes.
-	app.get('/api/movieGrenes/:sid/:pid', function(req, res){
-		return movieGenres.findOne({Movie_Id: req.params.sid, Grenes: req.params.pid}, function(err, doc){
+	//GET METHOD BY MOVIE ID OF Moviegenres.
+	app.get('/api/moviegenres/:mid/:gid', function(req, res){
+		return movieGenres.findOne({Movie_Id: req.params.mid, Genres: req.params.gid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1309,18 +1309,18 @@ module.exports = function(app) {
 		});
 	});
 
-	//POST to CREATE MovieGrenes
-	app.post('/api/movieGrenes', function (req, res) {
+	//POST to CREATE Moviegenres
+	app.post('/api/moviegenres', function (req, res) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  doc = new MovieGrenes({
+	  doc = new MovieGenres({
 	  	Movie_Id: req.body.Movie_Id,
-	  	Grenes: req.body.Grenes
+	  	Genres: req.body.Genres
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
-	      return console.log("created an new movieGrenes");
+	      return console.log("created an new moviegenres");
 	    } else {
 	      return console.log(err);
 	    }
@@ -1328,13 +1328,13 @@ module.exports = function(app) {
 	  return res.send(doc);
 	});
 
-	//remove a single doc from MovieGrenes
-	app.delete('/api/movieGrenes/:sid/:pid', function (req, res) {
-	  return MovieGrenes.findOne({Movie_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	//remove a single doc from Moviegenres
+	app.delete('/api/moviegenres/:mid/:gid', function (req, res) {
+	  return MovieGenres.findOne({Movie_Id: req.params.mid, Genres: req.params.gid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
-	        console.log("removed an movieGrenes");
+	        console.log("removed an moviegenres");
 	        return res.send('');
 	      } else {
 	        console.log(err);
@@ -1344,10 +1344,10 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/movieGrenes/:mid/:pid', function (req, res) {
-	  return MovieGrenes.findOne({Movie_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	app.put('/api/moviegenres/:mid/:gid', function (req, res) {
+	  return MovieGenres.findOne({Movie_Id: req.params.mid, Genres: req.params.gid}, function (err, doc) {
 	  	doc.Movie_Id = req.body.Movie_Id;
-	  	doc.Grenes = req.body.Grenes;
+	  	doc.Genres = req.body.Genres;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
@@ -1358,12 +1358,12 @@ module.exports = function(app) {
 	    });
 	  });
 	});
-	//--------------------------------MovieGrenes END-----------------------------
+	//--------------------------------Moviegenres END-----------------------------
 
 	//--------------------------------TVGenre START-----------------------------
 	//GET METHOD OF TVGenre.
-	app.get('/api/TVGrenes', function(req, res){
-		return TVGenre.find(function(err, doc){
+	app.get('/api/TVgenres', function(req, res){
+		return TVGenres.find(function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1373,9 +1373,9 @@ module.exports = function(app) {
 		});
 	});
 
-	//GET METHOD BY MOVIE ID OF TVGrenes.
-	app.get('/api/TVGrenes/:sid/:pid', function(req, res){
-		return TVGenres.findOne({Show_Id: req.params.sid, Grenes: req.params.pid}, function(err, doc){
+	//GET METHOD BY MOVIE ID OF TVgenres.
+	app.get('/api/TVgenres/:sid/:gid', function(req, res){
+		return TVGenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1385,18 +1385,18 @@ module.exports = function(app) {
 		});
 	});
 
-	//POST to CREATE TVGrenes
-	app.post('/api/TVGrenes', function (req, res) {
+	//POST to CREATE TVgenres
+	app.post('/api/TVgenres', function (req, res) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  doc = new TVGrenes({
+	  doc = new TVGenres({
 	  	Show_Id: req.body.Show_Id,
-	  	Grenes: req.body.Grenes
+	  	Genres: req.body.Genres
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
-	      return console.log("created an new TVGrenes");
+	      return console.log("created an new TVgenres");
 	    } else {
 	      return console.log(err);
 	    }
@@ -1404,13 +1404,13 @@ module.exports = function(app) {
 	  return res.send(doc);
 	});
 
-	//remove a single doc from TVGrenes
-	app.delete('/api/TVGrenes/:sid/:pid', function (req, res) {
-	  return TVGrenes.findOne({Show_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	//remove a single doc from TVgenres
+	app.delete('/api/TVgenres/:sid/:gid', function (req, res) {
+	  return TVgenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
-	        console.log("removed an TVGrenes");
+	        console.log("removed an TVgenres");
 	        return res.send('');
 	      } else {
 	        console.log(err);
@@ -1420,10 +1420,10 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/TVGrenes/:mid/:pid', function (req, res) {
-	  return TVGrenes.findOne({Show_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	app.put('/api/TVgenres/:sid/:gid', function (req, res) {
+	  return TVgenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
-	  	doc.Grenes = req.body.Grenes;
+	  	doc.Genres = req.body.Genres;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
@@ -1434,7 +1434,7 @@ module.exports = function(app) {
 	    });
 	  });
 	});
-	//--------------------------------TVGrenes END-----------------------------	
+	//--------------------------------TVgenres END-----------------------------	
 
 	app.get('*', function(req, res) {
 		res.render('index');
