@@ -67,7 +67,7 @@ module.exports = function(app) {
 	var awardMovieSchema = new mongoose.Schema({
 		Movie_Id: String,
 		Award_Id: String,
-		Sub_Category: String,//ex.best male actor
+		Type: String,//ex.best male actor
 		Year: String
 
 	});
