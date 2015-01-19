@@ -1,0 +1,229 @@
+<div ng-controller="TVshowsCtrl">
+<nav>
+  <ul class="pager">
+    <li class="previous"><a href="tvshows/{{tvshow.TVshow_Id*1 === 0 ? total-1 : tvshow.TVshow_Id*1-1}}"><span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span> Prev</a></li>
+    <li class="tvshowlist"><a href="tvshows"><span aria-hidden="true" class="glyphicon glyphicon-th-list"></span> List</a></li>
+    <li class="random"><a ng-click="randomTVShow(total)" href=""><span aria-hidden="true" class="glyphicon glyphicon-random"></span> Random</a></li>
+    <li class="next"><a href="tvshows/{{tvshow.TVshow_Id*1 === total-1 ? 0 : tvshow.TVshow_Id*1+1}}">Next <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a></li>
+  </ul>
+</nav>
+<div class="page-header">
+  <h1>{{tvshow.TVshow_Title}} <small>({{tvshow.Release_Date}})</small> <span class="label label-warning">{{tvshow.Rating}}</span>
+  <a href="" data-toggle="modal" data-target="#updateTVshow"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a>
+  <a href="" class="btn" ng-click="removeTVshow(tvshow)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></a></h1>
+</div>
+
+<!-- Modal Edit TVshow-->
+<div class="modal fade" id="updateTVshow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit The TV show.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateTVshow(tvshow)">
+          <div class="form-group">
+            <label for="inputTVshowId" class="col-sm-3 control-label">TV show ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.TVshowId" id="inputTVshowId" placeholder="TVshow ID" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputTVshowTitle" class="col-sm-3 control-label">TVshow Title</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.TVshowTitle" id="inputTVshowTitle" placeholder="TVshow Title" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Release Date</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.ReleaseDate" id="inputReleaseDate" placeholder="yyyy-mm-dd">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDuration" class="col-sm-3 control-label">Duration</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Duration" id="inputDuration" placeholder="min">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputRating" class="col-sm-3 control-label">Rating</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Rating" id="inputRating" placeholder="0.0-10.0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDirector" class="col-sm-3 control-label">Director</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Director" id="inputDirector" placeholder="Director">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputImgSrc" class="col-sm-3 control-label">Image</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.ImgSrc" id="inputImgSrc" placeholder="http://">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" ng-model="form.Description" id="inputDescription" rows="3" placeholder="Description"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputCountry" class="col-sm-3 control-label">Country</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Country" id="inputCountry" placeholder="Country">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputLanguage" class="col-sm-3 control-label">Language</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Language" id="inputLanguage" placeholder="Language">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputCompany" class="col-sm-3 control-label">Company</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Company" id="inputCompany" placeholder="Company">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="row featurette">
+  <div class="col-md-3">
+    <a href="{{tvshow.Img_Src}}"><img class="featurette-image img-responsive" src="{{tvshow.Img_Src}}" alt="{{tvshow.TVshow_Title}}"/></a>
+  </div>
+  <div class="col-md-7">
+    
+    <p class="lead" style="text-indent: 2em;">{{tvshow.Description}}</p>
+    <h4><span class="text-muted">Director: </span> <a href="people/{{tvshow.Director}}">{{director}}</a></h4>
+    <h4><span class="text-muted">Duration: </span> {{tvshow.Duration}} min</h4>
+    <h4><span class="text-muted">Country: </span> {{tvshow.Country}}</h4>
+    <h4><span class="text-muted">Language: </span> {{tvshow.Language}}</h4>
+    <h4><span class="text-muted">Company: </span> {{tvshow.Company}}</h4>
+  </div>
+</div>
+
+<br></br>
+<h2>Cast
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAct"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
+<div class="list-group">
+<a href="people/{{cast.People_Id}}" class="list-group-item clearfix" id="people_{{cast.People_Id}}" ng-repeat="cast in acts" ng-context-menu="menuOptions">
+  <div class="row container">
+    <div class="col-md-1"><img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)" src="{{person.Img_Src}}"/></div>
+    <div class="col-md-10"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)">
+    {{person.People_Name}}  <small><span class="label label-default">as</span></small>    {{cast.Character}}
+    </h4></div>
+    <button href="" class="btn btn-link" ng-click="deleteAct(cast)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+  </div>
+</a> 
+</div>
+
+
+<br></br>
+<h2>Award
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
+<div class="list-group">
+<a href="" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
+  <div class="row container">
+    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
+      <small>{{award.Year}}</small>    {{award.Type}}
+    </h4></div>
+    <button href="" class="btn btn-link" ng-click="deleteAward(award)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+  </div>
+</a> 
+</div>
+
+
+
+
+</div>
+
+<!-- Modal Edit Act-->
+<div class="modal fade" id="updateAct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add/Edit The Actor/Actress.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateAct()">
+          <div class="form-group">
+            <label for="inputTVshowTitle" class="col-sm-3 control-label">People ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.PeopleId" placeholder="People ID" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Character Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Character" placeholder="Character">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Award-->
+<div class="modal fade" id="updateAward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add/Edit The Award.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateAward()">
+          <div class="form-group">
+            <label for="inputTVshowTitle" class="col-sm-3 control-label">Award ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form3.Award_Id" placeholder="Award ID" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Year</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form3.Year" placeholder="yyyy" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Type</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form3.Type" placeholder="Won or Nominated" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>

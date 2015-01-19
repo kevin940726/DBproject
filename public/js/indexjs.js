@@ -20,6 +20,10 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
 			templateUrl : 'partials/movies.html',
 			controller  : 'MoviesCtrl'
 		})
+    .when('/tvshow', {
+      title: 'TV Show List- IMDb2',
+      templateUrl : 'partials/tvshowList.html',
+      controller  : 'TVShowCtrl'
     .when('/people', {
       title: 'People List - IMDb2',
       templateUrl: 'partials/peopleList.html',
@@ -329,6 +333,49 @@ index.controller('PeopleListCtrl', function($scope, $http, $window) {
       $window.location.href = '/people';
     });
   };     
+});
+
+index.controller('TVshowListCtrl', function ($scope, $http, $window) {
+  $http.get('/api/tvshows').success(function(data) {
+      $scope.tvshow = data;
+  });
+  $scope.currentPage = 0;
+  $scope.pageSize = 25;
+  $scope.numberOfPages = function(){
+    if (!$scope.tvshow || !$scope.tvshow.length) return;
+    return Math.floor($scope.tvshow.length/$scope.pageSize)+1;
+  };
+  $scope.getNumber = function(num) {
+      return new Array(num);   
+  };
+  $scope.pageClass = function(page){
+    return page == $scope.currentPage ? 'active' : '';
+  };
+  $scope.changePage = function(page){
+    $scope.currentPage = page;
+  };
+  $scope.submitForm = function() {
+    $http({
+      method: 'POST',
+      url: 'api/tvshows',
+      data: $.param({
+        TVshow_Id: $scope.form.TVshowId,
+        TVshow_Title: $scope.form.TVshowTitle,
+        Release_Date: $scope.form.ReleaseDate,
+        Duration: $scope.form.Duration,
+        Rating: $scope.form.Rating,
+        Director: $scope.form.Director,
+        Img_Src: $scope.form.ImgSrc,
+        Description: $scope.form.Description,
+        Country: $scope.form.Country,
+        Language: $scope.form.Language,
+        Company: $scope.form.Company
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/tvshows';
+    });
+  }             
 });
 
 
