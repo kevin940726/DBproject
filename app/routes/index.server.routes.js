@@ -1115,3 +1115,307 @@ module.exports = function(app) {
 
 	//--------------------------------DirectTV END-----------------------------
 
+	//--------------------------------WriteMovie START-----------------------------
+	//GET METHOD OF WriteMovie.
+	app.get('/api/writeMovie', function(req, res){
+		return WriteMovie.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF WriteMovie.
+	app.get('/api/writeMovie/:sid/:pid', function(req, res){
+		return WriteMovie.findOne({People_Id: req.params.sid, Movie_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE WriteMovie
+	app.post('/api/writeMovie', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new WriteMovie({
+	  	People_Id: req.body.People_Id,
+	  	Movie_Id: req.body.Movie_Id
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created an new writeMovie");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from WriteMovie
+	app.delete('/api/writeMovie/:sid/:pid', function (req, res) {
+	  return WriteMovie.findOne({People_Id: req.params.sid, Movie_Id: req.params.pid}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed an writeMovie");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single act update
+	app.put('/api/writeMovie/:mid/:pid', function (req, res) {
+	  return WriteMovie.findOne({People_Id: req.params.sid, Movie_Id: req.params.pid}, function (err, doc) {
+	  	doc.People_Id = req.body.People_Id;
+	  	doc.Movie_Id = req.body.Movie_Id;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+	//--------------------------------WriteMovie END-----------------------------
+	
+	//--------------------------------WriteTV START-----------------------------
+	//GET METHOD OF WriteTV.
+	app.get('/api/writeTV', function(req, res){
+		return WriteTV.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY TVShow ID OF WriteTV.
+	app.get('/api/writeTV/:sid/:pid', function(req, res){
+		return WriteTV.findOne({People_Id: req.params.sid, Show_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE WriteTV
+	app.post('/api/writeTV', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new WriteTV({
+	  	People_Id: req.body.People_Id,
+	  	Show_Id: req.body.Show_Id
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created an new writeTV");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from WriteTV
+	app.delete('/api/writeTV/:sid/:pid', function (req, res) {
+	  return WriteTV.findOne({People_Id: req.params.sid, Show_Id: req.params.pid}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed an writeTV");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single act update
+	app.put('/api/writeTV/:mid/:pid', function (req, res) {
+	  return WriteTV.findOne({People_Id: req.params.sid, Show_Id: req.params.pid}, function (err, doc) {
+	  	doc.People_Id = req.body.People_Id;
+	  	doc.Show_Id = req.body.Show_Id;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+	//--------------------------------WriteTV END-----------------------------
+
+
+	//--------------------------------MovieGenre START-----------------------------
+	//GET METHOD OF WriteTV.
+	app.get('/api/movieGrenes', function(req, res){
+		return MovieGenre.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF MovieGrenes.
+	app.get('/api/movieGrenes/:sid/:pid', function(req, res){
+		return movieGenres.findOne({Movie_Id: req.params.sid, Grenes: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE MovieGrenes
+	app.post('/api/movieGrenes', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new MovieGrenes({
+	  	Movie_Id: req.body.Movie_Id,
+	  	Grenes: req.body.Grenes
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created an new movieGrenes");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from MovieGrenes
+	app.delete('/api/movieGrenes/:sid/:pid', function (req, res) {
+	  return MovieGrenes.findOne({Movie_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed an movieGrenes");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single act update
+	app.put('/api/movieGrenes/:mid/:pid', function (req, res) {
+	  return MovieGrenes.findOne({Movie_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	  	doc.Movie_Id = req.body.Movie_Id;
+	  	doc.Grenes = req.body.Grenes;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+	//--------------------------------MovieGrenes END-----------------------------
+
+	//--------------------------------TVGenre START-----------------------------
+	//GET METHOD OF TVGenre.
+	app.get('/api/TVGrenes', function(req, res){
+		return TVGenre.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF TVGrenes.
+	app.get('/api/TVGrenes/:sid/:pid', function(req, res){
+		return TVGenres.findOne({Show_Id: req.params.sid, Grenes: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//POST to CREATE TVGrenes
+	app.post('/api/TVGrenes', function (req, res) {
+	  var doc;
+	  console.log("POST: ");
+	  console.log(req.body);
+	  doc = new TVGrenes({
+	  	Show_Id: req.body.Show_Id,
+	  	Grenes: req.body.Grenes
+	  });
+	  doc.save(function (err) {
+	    if (!err) {
+	      return console.log("created an new TVGrenes");
+	    } else {
+	      return console.log(err);
+	    }
+	  });
+	  return res.send(doc);
+	});
+
+	//remove a single doc from TVGrenes
+	app.delete('/api/TVGrenes/:sid/:pid', function (req, res) {
+	  return TVGrenes.findOne({Show_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	  	console.log(doc);
+	    return doc.remove(function (err) {
+	      if (!err) {
+	        console.log("removed an TVGrenes");
+	        return res.send('');
+	      } else {
+	        console.log(err);
+	      }
+	    });
+	  });
+	});
+
+	//Single act update
+	app.put('/api/TVGrenes/:mid/:pid', function (req, res) {
+	  return TVGrenes.findOne({Show_Id: req.params.sid, Grenes: req.params.pid}, function (err, doc) {
+	  	doc.Show_Id = req.body.Show_Id;
+	  	doc.Grenes = req.body.Grenes;
+	    return doc.save(function (err) {
+	      if (!err) {
+	        console.log("updated");
+	      } else {
+	        console.log(err);
+	      }
+	      return res.send(doc);
+	    });
+	  });
+	});
+	//--------------------------------TVGrenes END-----------------------------	
