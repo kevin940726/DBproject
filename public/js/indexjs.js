@@ -468,6 +468,9 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/tvshow/').success(function(data) {
     $scope.tvshow = data;
   });
+  $http.get('api/movies/').success(function(data) {
+    $scope.movies = data;
+  });
   $scope.randomPerson = function(data) {
     var rand = Math.floor((Math.random()*data));
     while (rand === $routeParams.id*1){
