@@ -1145,6 +1145,18 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF WriteMovie.
+	app.get('/api/writeMovie/:mid', function(req, res){
+		return WriteMovie.find({Movie_Id: req.params.mid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF WriteMovie.
 	app.get('/api/writeMovie/:mid/:pid', function(req, res){
 		return WriteMovie.findOne({Movie_Id: req.params.mid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){

@@ -132,6 +132,9 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/award').success(function(data){
     $scope.awardsName = data;
   });
+  $http.get('api/writeMovie/'+$routeParams.id).success(function(data) {
+    $scope.writers = data;
+  })
   $http.get('/api/movies/'+$routeParams.id).success(function(data) {
     if (data.length !== 0) $scope.movie = data;
     else $location.path("/movies");

@@ -8,7 +8,7 @@
   </ul>
 </nav>
 <div class="page-header">
-  <h1>{{movie.Movie_Title}} <small>({{movie.Release_Date}})</small> <span class="label label-warning">{{movie.Rating}}</span>
+  <h1>{{movie.Movie_Title}} <small>({{movie.Release_Date}})</small> <span class="label label-warning">{{movie.Rating}}</span> 
   <a href="" data-toggle="modal" data-target="#updateMovie"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a>
   <a href="" class="btn" ng-click="removeMovie(movie)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></a></h1>
 </div>
@@ -108,6 +108,7 @@
     
     <p class="lead text-justify" style="text-indent: 2em;">{{movie.Description}}</p>
     <h4><span class="text-muted">Director: </span> <a href="people/{{movie.Director}}">{{director}}</a></h4>
+    <h4><span class="text-muted">Writer: </span> <a href="people/{{writer.People_Id}}" ng-repeat="writer in writers"><span ng-repeat="name in people | filter: {People_Id: writer.People_Id}:true">{{name.People_Name}}</span> </a></h4>
     <h4><span class="text-muted">Duration: </span> {{movie.Duration}} min</h4>
     <h4><span class="text-muted">Country: </span> {{movie.Country}}</h4>
     <h4><span class="text-muted">Language: </span> {{movie.Language}}</h4>
@@ -122,13 +123,13 @@
   </span>
 </h2>
 <div class="list-group">
-<a href="people/{{cast.People_Id}}" class="list-group-item clearfix" id="people_{{cast.People_Id}}" ng-repeat="cast in acts" ng-context-menu="menuOptions">
+<a href="people/{{cast.People_Id}}" class="list-group-item clearfix" id="people_{{cast.People_Id}}" ng-repeat="cast in acts" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
   <div class="row container">
     <div class="col-md-1"><img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)" src="{{person.Img_Src}}"/></div>
     <div class="col-md-10"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="person in (people | filter: {People_Id : cast.People_Id}:true)">
     {{person.People_Name}}  <small><span class="label label-default">as</span></small>    {{cast.Character}}
     </h4></div>
-    <button href="" class="btn btn-link" ng-click="deleteAct(cast)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+    <button href="" class="btn btn-link" ng-click="deleteAct(cast)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
 </a> 
 </div>
@@ -141,12 +142,12 @@
   </span>
 </h2>
 <div class="list-group">
-<a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
+<a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
   <div class="row container">
     <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
       <small>{{award.Year}}</small>    {{award.Type}}
     </h4></div>
-    <button href="" class="btn btn-link" ng-click="deleteAward(award)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+    <button href="" class="btn btn-link" ng-click="deleteAward(award)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
 </a> 
 </div>
