@@ -140,6 +140,9 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/writeMovie/'+$routeParams.id).success(function(data) {
     $scope.writers = data;
   });
+  $http.get('api/moviegenres/'+$routeParams.id).success(function(data) {
+    $scope.genres = data;
+  });
   $http.get('/api/movies/'+$routeParams.id).success(function(data) {
     if (data.length !== 0) $scope.movie = data;
     else $location.path("/movies");
@@ -301,6 +304,32 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
     }).success(function() {
       $window.location.href = '/movies/'+mid;
     });
+  };
+  $scope.updateGenre = function() {
+    var mid = $routeParams.id;
+    var gid = $scope.form4.Genre;
+    if($scope.form4.addG){
+      $http({
+        method: 'POST',
+        url: 'api/moviegenres/',
+        data: $.param({
+          Movie_Id: mid,
+          Genre: gid
+        }),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      }).success(function() {
+        $window.location.href = '/movies/'+mid;
+      });
+    }
+    else if ($scope.form4.deleteG){
+      $http({
+        method: 'DELETE',
+        url: 'api/moviegenres/'+mid+'/'+gid,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      }).success(function() {
+        $window.location.href = '/movies/'+mid;
+      });
+    }
   };
 });
 
