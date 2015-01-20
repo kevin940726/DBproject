@@ -467,6 +467,42 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       $location.path("/people");
     });
   };
+  $scope.updateDirectTV = function() {
+    var pid = $routeParams.id;
+    var sid = $scope.form1.Show_Id;
+    
+    $http.get('api/directTV/'+sid+'/'+pid ).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/directTV/'+sid+'/'+ pid,
+          data: $.param({
+            Show_Id: sid,
+            People_Id: pid,
+            Episodes: $scope.form1.Episodes,
+            
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/directTV/',
+          data: $.param({
+            Show_Id: sid,
+            People_Id: pid,
+            Episodes: $scope.form1.Episodes,
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+    });
+  };
   $scope.updateAward = function() {
     var pid = $routeParams.id;
     var aid = $scope.form2.Award_Id;
