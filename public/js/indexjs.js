@@ -460,12 +460,12 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     var pid = $routeParams.People_Id;
     var aid = $scope.form2.Award_Id;
     var y = $scope.form2.Year;
-    var c = $scope.form2.Category
-    $http.get('api/awardMovie/'+mid+'/'+aid+'/'+y+'/'+c ).success(function(data) {
+    var c = $scope.form2.Category;
+    $http.get('api/awardPeople/'+pid+'/'+aid+'/'+y+'/'+c ).success(function(data) {
       if (data.length !== 0) {
         $http({
           method: 'PUT',
-          url: 'api/awardMovie/'+mid+'/'+aid+'/'+y+ '/'+c,
+          url: 'api/awardPeople/'+mid+'/'+aid+'/'+y+ '/'+c,
           data: $.param({
             People_Id: pid,
             Award_Id: aid,
