@@ -42,6 +42,11 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
       templateUrl: 'partials/people.html',
       controller: 'PeopleCtrl'
     })
+    .when('/DirectTV/:pid', {
+      title: ' - IMDb2',
+      templateUrl: 'partials/people.html',
+      controller: 'PeopleCtrl'
+    })
     .when('/awards', {
       title: 'Awards - IMDb2',
       templateUrl: 'partials/awards.html',
@@ -409,6 +414,9 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/award/').success(function(data) {
     $scope.awardsName = data;
   }); 
+  $http.get('api/DirectTV/'+$routeParams.pid).success(function(data) {
+    $scope.direct = data;
+  }); 
   $scope.randomPerson = function(data) {
     var rand = Math.floor((Math.random()*data));
     while (rand === $routeParams.id*1){
@@ -465,7 +473,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       if (data.length !== 0) {
         $http({
           method: 'PUT',
-          url: 'api/awardPeople/'+mid+'/'+aid+'/'+y+ '/'+c,
+          url: 'api/awardPeople/'+pid+'/'+aid+'/'+y+ '/'+c,
           data: $.param({
             People_Id: pid,
             Award_Id: aid,
@@ -483,7 +491,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
           method: 'POST',
           url: 'api/awardPeople/',
           data: $.param({
-            Peolple_Id: pid,
+            People_Id: pid,
             Award_Id: aid,
             Type: $scope.form2.Type,
             Year: y,

@@ -161,19 +161,19 @@
 <!-- An Award List END -->
 
 
-<!-- An DIRECT Movie List START -->
+<!-- An DIRECT TV List START -->
 <div class="list-group">
-<a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
+<a href="direct" class="list-group-item clearfix" ng-repeat="director in direct | object2Array | orderBy: ['-Show_Id', '-People_Id', '-Episodes']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
   <div class="row container">
-    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
-      <small>{{award.Year}}</small>    {{award.Type}}
+    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="showname in (showname | filter: {Show_Id: director.Show_Id}:true)">{{showname.Show_Name}}
+      <small>{{director.Episodes}}</small>    
     </h4></div>
-    <button href="" class="btn btn-link" ng-click="deleteAward(award)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+    <button href="" class="btn btn-link" ng-click="deleteDirectTV(director)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
 </a> 
-<h4 class="list-group-item" ng-show="!awards.length">None</h4>
+<h4 class="list-group-item" ng-show="!direct.length">None</h4>
 </div>
-
+<!-- An DIRECT Movie TV END -->
 
 
 
