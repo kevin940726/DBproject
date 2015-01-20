@@ -86,11 +86,8 @@
 
 <br></br>
 
-<h2>Award
-  <span>
-    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
-  </span>
-</h2>
+
+
 
 <!-- Modal Edit Award START-->
 <div class="modal fade" id="updateAward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -107,7 +104,7 @@
           <div class="form-group">
             <label for="inputAwardID" class="col-sm-3 control-label">Award ID</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form2.Award_ID" id="inputAwardID" placeholder="Award ID" required>
+              <input class="form-control" ng-model="form2.Award_Id" id="inputAwardID" placeholder="Award ID" required>
             </div>
           </div>
 
@@ -146,6 +143,12 @@
 </div>
 <!-- Modal Edit Award END-->
 
+
+<h2>Award
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
 <!-- An Award List START -->
 <div class="list-group">
 <a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
@@ -161,19 +164,25 @@
 <!-- An Award List END -->
 
 
-<!-- An DIRECT TV List START -->
+
+<h2>Direct TV Show
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
+
 <div class="list-group">
-<a href="direct" class="list-group-item clearfix" ng-repeat="director in direct | object2Array | orderBy: ['-Show_Id', '-People_Id', '-Episodes']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
+<a href="direct" class="list-group-item clearfix" ng-repeat="director in direct | object2Array | orderBy: '-Episodes'" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
   <div class="row container">
-    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="showname in (showname | filter: {Show_Id: director.Show_Id}:true)">{{showname.Show_Name}}
-      <small>{{director.Episodes}}</small>    
+    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="showname in (tvshow | filter: {Show_Id: director.Show_Id}:true)">{{showname.Title}}
+      <small>{{director.Episodes}} Episodes</small>    
     </h4></div>
     <button href="" class="btn btn-link" ng-click="deleteDirectTV(director)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
 </a> 
 <h4 class="list-group-item" ng-show="!direct.length">None</h4>
 </div>
-<!-- An DIRECT Movie TV END -->
+
 
 
 

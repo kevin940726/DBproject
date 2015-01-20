@@ -97,7 +97,7 @@ module.exports = function(app) {
 	var Direct_TVSchema = new mongoose.Schema({
 		People_ID: String,
 		Show_Id: String,
-		Episode: Number,
+		Episodes: Number,
 	})
 
 	var Write_MovieSchema = new mongoose.Schema({
@@ -1066,7 +1066,7 @@ module.exports = function(app) {
 
 	//--------------------------------DirectTV START-----------------------------
 	//GET METHOD OF DirectTV.
-	app.get('/api/driectTV', function(req, res){
+	app.get('/api/directTV', function(req, res){
 		return DirectTV.find(function(err, doc){
 			if(!err){
 				return res.send(doc);
@@ -1078,7 +1078,7 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF DirectTV.
-	app.get('/api/driectTV/:sid/:pid', function(req, res){
+	app.get('/api/directTV/:sid/:pid', function(req, res){
 		return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
@@ -1088,16 +1088,26 @@ module.exports = function(app) {
 			}
 		});
 	});
-
+	// GET METHOD BY PEOPLE ID OF DirectTV
+	app.get('/api/directTV/:pid', function(req, res){
+		return DirectTV.find({People_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
 	//POST to CREATE DIRECT_TV
-	app.post('/api/driectTV', function (req, res) {
+	app.post('/api/directTV', function (req, res) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
 	  doc = new DirectTV({
 	  	Show_Id: req.body.Show_Id,
 	  	People_Id: req.body.People_Id,
-	  	Episode: req.body.Episode
+	  	Episodes: req.body.Episodes
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1110,7 +1120,7 @@ module.exports = function(app) {
 	});
 
 	//remove a single doc from DIRECT_TV
-	app.delete('/api/driectTV/:sid/:pid', function (req, res) {
+	app.delete('/api/directTV/:sid/:pid', function (req, res) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
@@ -1125,11 +1135,11 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/driectTV/:mid/:pid', function (req, res) {
+	app.put('/api/directTV/:mid/:pid', function (req, res) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.People_Id = req.body.People_Id;
-	  	doc.Episode = req.body.Episode;
+	  	doc.Episodes = req.body.Episodes;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");

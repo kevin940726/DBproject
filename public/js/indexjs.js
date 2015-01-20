@@ -414,8 +414,11 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/award/').success(function(data) {
     $scope.awardsName = data;
   }); 
-  $http.get('api/DirectTV/'+$routeParams.pid).success(function(data) {
+  $http.get('api/directTV/'+$routeParams.id).success(function(data) {
     $scope.direct = data;
+  }); 
+  $http.get('api/tvshow/').success(function(data) {
+    $scope.tvshow = data;
   }); 
   $scope.randomPerson = function(data) {
     var rand = Math.floor((Math.random()*data));
@@ -465,7 +468,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     });
   };
   $scope.updateAward = function() {
-    var pid = $routeParams.People_Id;
+    var pid = $routeParams.id;
     var aid = $scope.form2.Award_Id;
     var y = $scope.form2.Year;
     var c = $scope.form2.Category;
