@@ -106,7 +106,7 @@
   </div>
   <div class="col-md-7">
     
-    <p class="lead" style="text-indent: 2em;">{{movie.Description}}</p>
+    <p class="lead text-justify" style="text-indent: 2em;">{{movie.Description}}</p>
     <h4><span class="text-muted">Director: </span> <a href="people/{{movie.Director}}">{{director}}</a></h4>
     <h4><span class="text-muted">Duration: </span> {{movie.Duration}} min</h4>
     <h4><span class="text-muted">Country: </span> {{movie.Country}}</h4>
@@ -141,7 +141,7 @@
   </span>
 </h2>
 <div class="list-group">
-<a href="" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
+<a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
   <div class="row container">
     <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
       <small>{{award.Year}}</small>    {{award.Type}}
