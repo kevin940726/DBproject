@@ -458,9 +458,9 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   };
   $scope.updateAward = function() {
     var pid = $routeParams.People_Id;
-    var aid = $scope.form3.Award_Id;
-    var y = $scope.form3.Year;
-    var c = $scope.form3.Category
+    var aid = $scope.form2.Award_Id;
+    var y = $scope.form2.Year;
+    var c = $scope.form2.Category
     $http.get('api/awardMovie/'+mid+'/'+aid+'/'+y+'/'+c ).success(function(data) {
       if (data.length !== 0) {
         $http({
@@ -469,7 +469,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
           data: $.param({
             People_Id: pid,
             Award_Id: aid,
-            Type: $scope.form3.Type,
+            Type: $scope.form2.Type,
             Year: y,
             Category: c
           }),
@@ -485,7 +485,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
           data: $.param({
             Peolple_Id: pid,
             Award_Id: aid,
-            Type: $scope.form3.Type,
+            Type: $scope.form2.Type,
             Year: y,
             Category: c
           }),
