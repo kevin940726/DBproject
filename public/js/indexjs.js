@@ -457,7 +457,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     });
   };
   $scope.updateAward = function() {
-    var pid = $routeParams.People_Id;
+    var pid = $routeParams.pid;
     var aid = $scope.form2.Award_Id;
     var y = $scope.form2.Year;
     var c = $scope.form2.Category;
