@@ -12,7 +12,7 @@
   <a href="" class="btn" ng-click="removePerson(person)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></a></h1>
 </div>
 
-<!-- Modal Edit Movie-->
+<!-- Modal Edit People START-->
 <div class="modal fade" id="updatePerson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -55,7 +55,7 @@
           <div class="form-group">
             <label for="inputDescription" class="col-sm-3 control-label">Description</label>
             <div class="col-sm-9">
-              <textarea class="form-control" ng-model="form.Description" id="inputDescription" placeholder="Description"></textarea>
+              <textarea class="form-control" ng-model="form.Description" id="inputDescription" placeholder="Description" rows = "3"></textarea>
             </div>
           </div>
           <div class="modal-footer">
@@ -68,6 +68,8 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Edit People END-->
 
 <div class="row featurette">
   <div class="col-md-3">
@@ -89,6 +91,58 @@
     <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
   </span>
 </h2>
+
+<!-- Modal Edit Award START-->
+<div class="modal fade" id="updateAward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit The Award.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateAward(award)">
+          
+
+          <div class="form-group">
+            <label for="inputAwardName" class="col-sm-3 control-label">Award Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Award_Name" id="inputAwardName" placeholder="Award Name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputCategory" class="col-sm-3 control-label">Category</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" ng-model="form2.Category" id="inputCategory" placeholder="Best Performance by an Actor in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television" rows = "2"></textarea>
+            </div>
+          </div>  
+
+          <div class="form-group">
+            <label for="inputType" class="col-sm-3 control-label">Type</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Type" id="inputType" placeholder="Nominated" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputYear" class="col-sm-3 control-label">Year</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Year" id="inputYear" placeholder="2009" required>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Award END-->
+
+
 <div class="list-group">
 <a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
   <div class="row container">
