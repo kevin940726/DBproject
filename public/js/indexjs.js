@@ -444,7 +444,72 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     }).success(function() {
       $window.location.href = '/people/'+id;
     })
-  }; 
+  };
+
+  $scope.removePerson = function(data){
+    var id = data.People_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/People/'+id,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $location.path("/people");
+    });
+  };
+  $scope.updateAward = function() {
+    var pid = $routeParams.People_Id;
+    var aid = $scope.form3.Award_Id;
+    var y = $scope.form3.Year;
+    var c = $scope.form3.Category
+    $http.get('api/awardMovie/'+mid+'/'+aid+'/'+y+'/'+c ).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/awardMovie/'+mid+'/'+aid+'/'+y+ '/'+c,
+          data: $.param({
+            People_Id: pid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y,
+            Category: c
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/awardPeople/',
+          data: $.param({
+            Peolple_Id: pid,
+            Award_Id: aid,
+            Type: $scope.form3.Type,
+            Year: y,
+            Category: c
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var pid = data.People_Id;
+    var aid = data.Award_Id;
+    var y = data.Year;
+    var c = data.Category;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardPeople/'+pid+'/'+aid+'/'+y+'/' +c,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people/'+pid;
+    });
+  };
+
 }); 
 
 index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
