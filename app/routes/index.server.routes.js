@@ -346,10 +346,22 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY ID.
-	app.get('/api/tvshowdetail/:sid/:nid/:eid', function(req, res){
-		return TVShowDetail.findOne({Show_Id: req.params.sid, Season: req.params.nid, Episode: req.params.eid}, function(err, tvshowdetail){
+	app.get('/api/tvshowdetail/:sid', function(req, res){
+		return TVShowDetail.find({Show_Id: req.params.sid}, function(err, doc){
 			if(!err){
-				return res.send(tvshow);
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY ID.
+	app.get('/api/tvshowdetail/:sid/:nid/:eid', function(req, res){
+		return TVShowDetail.findOne({Show_Id: req.params.sid, Season: req.params.nid, Episode: req.params.eid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
 			}
 			else{
 				return res.send("Error!");
