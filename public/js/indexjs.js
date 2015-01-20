@@ -459,10 +459,10 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/directTV/'+$routeParams.id).success(function(data) {
     $scope.direct = data;
   }); 
-  $http.get('api/writeTV/'+$routeParams.id).success(function(data) {
+  $http.get('api/writeTV/byPeople/'+$routeParams.id).success(function(data) {
     $scope.write = data;
   });
-  $http.get('api/writeMovie/'+$routeParams.id).success(function(data) {
+  $http.get('api/writeMovie/byPeople/'+$routeParams.id).success(function(data) {
     $scope.writem = data;
   });
   $http.get('api/tvshow/').success(function(data) {
@@ -471,14 +471,6 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/movies/').success(function(data) {
     $scope.movies = data;
   });
-  $scope.randomPerson = function(data) {
-    var rand = Math.floor((Math.random()*data));
-    while (rand === $routeParams.id*1){
-      rand = Math.floor((Math.random()*data));
-    }
-    $location.path("/people/"+rand);
-    return rand;
-  };
   $scope.formset = function(data) {
     $scope.form = {
       People_Id: data.People_Id,
@@ -495,7 +487,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       method: 'PUT',
       url: 'api/people/'+id,
       data: $.param({
-        People_Id: $scope.form.People_Id,
+        People_Id: id,
         People_Name: $scope.form.People_Name,
         Birth_Date: $scope.form.Birth_Date,
         Country: $scope.form.Country,
@@ -526,7 +518,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       if (data.length !== 0) {
         $http({
           method: 'PUT',
-          url: 'api/directTV/'+pid+'/'+sid,
+          url: 'api/directTV/'+sid+'/'+pid,
           data: $.param({
             People_Id: pid,
             Show_Id: sid,

@@ -1152,7 +1152,7 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/directTV/:mid/:pid', function (req, res) {
+	app.put('/api/directTV/:sid/:pid', function (req, res) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.People_Id = req.body.People_Id;
 	  	doc.Show_Id = req.body.Show_Id;
@@ -1174,6 +1174,18 @@ module.exports = function(app) {
 	//GET METHOD OF WriteMovie.
 	app.get('/api/writeMovie', function(req, res){
 		return WriteMovie.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY PEOPLE ID OF WriteMovie
+	app.get('/api/writeMovie/byPeople/:pid', function(req, res){
+		return WriteMovie.find({People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1206,17 +1218,7 @@ module.exports = function(app) {
 			}
 		});
 	});
-	//GET METHOD BY PEOPLE ID OF WriteMovie
-	app.get('/api/writeMovie/:pid', function(req, res){
-		return WriteMovie.find({People_Id: req.params.pid}, function(err, doc){
-			if(!err){
-				return res.send(doc);
-			}
-			else{
-				return res.send("Error!");
-			}
-		});
-	});
+	
 	//POST to CREATE WriteMovie
 	app.post('/api/writeMovie', function (req, res) {
 	  var doc;
@@ -1271,7 +1273,19 @@ module.exports = function(app) {
 	//--------------------------------WriteTV START-----------------------------
 	//GET METHOD OF WriteTV.
 	app.get('/api/writeTV', function(req, res){
-		return WriteTVShow.find(function(err, doc){
+		return WriteTV.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY PEOPLE ID OF WriteTV
+	app.get('/api/writeTV/byPeople/:pid', function(req, res){
+		return WriteTV.find({People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1295,7 +1309,7 @@ module.exports = function(app) {
 
 	//GET METHOD BY TVShow ID OF WriteTV.
 	app.get('/api/writeTV/:sid/:pid', function(req, res){
-		return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
+		return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1304,23 +1318,13 @@ module.exports = function(app) {
 			}
 		});
 	});
-	//GET METHOD BY PEOPLE ID OF WriteTV
-	app.get('/api/writeTV/:pid', function(req, res){
-		return WriteTVShow.find({People_Id: req.params.pid}, function(err, doc){
-			if(!err){
-				return res.send(doc);
-			}
-			else{
-				return res.send("Error!");
-			}
-		});
-	});
+	
 	//POST to CREATE WriteTV
 	app.post('/api/writeTV', function (req, res) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  doc = new WriteTVShow({
+	  doc = new WriteTV({
 	  	People_Id: req.body.People_Id,
 	  	Show_Id: req.body.Show_Id
 	  });
@@ -1336,7 +1340,7 @@ module.exports = function(app) {
 
 	//remove a single doc from WriteTV
 	app.delete('/api/writeTV/:sid/:pid', function (req, res) {
-	  return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1351,7 +1355,7 @@ module.exports = function(app) {
 
 	//Single act update
 	app.put('/api/writeTV/:sid/:pid', function (req, res) {
-	  return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.People_Id = req.body.People_Id;
 	  	doc.Show_Id = req.body.Show_Id;
 	    return doc.save(function (err) {
