@@ -1,0 +1,67 @@
+<div ng-controller="AwardsCtrl">
+	<form class="row container">
+	  <nav>
+	    <ul class="pager">
+	      <li class="previous"><a href="/"><span aria-hidden="true" class="glyphicon glyphicon-home"></span> Home</a></li>
+	      <li class="next"><a href="" data-toggle="modal" data-target="#addMovie"><span aria-hidden="true" class="glyphicon glyphicon-plus" ></span> Add</a></li>
+	    </ul>
+	  </nav>
+	</form>
+	<br></br>
+
+	<div class="panel-group" role="tablist" aria-multiselectable="true">
+		<div class="panel panel-default" ng-repeat="award in awards">
+		  	<div class="panel-heading" ng-click="isCollapsed = !isCollapsed"><a href="" style="text-decoration: none">
+		  		<div class="row">
+		  		<div class="col-md-2"><img class="img-responsive img-thumbnail" style="height: 130px;" src="{{award.Img_Src}}"/></div>
+		  		<div class="col-md-10"><h3>{{award.Award_Name}}</h3></div>
+		  		</div>
+		  	</a></div>
+		  	<div class="panel-body" ng-show="isCollapsed">
+		    	<p style="text-indent: 2em" class="text-justify lead">{{award.Description}}</p>
+		    	<div class="panel-group" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" ng-click="isSubCollapsed1 = !isSubCollapsed1"><a href="" style="text-decoration: none"><h4>Movies</h4></a></div>
+						<div class="panel-body" ng-show="isSubCollapsed1">
+						<ul class="list-group">
+							<a href="movies/{{movie.Movie_Id}}" ng-repeat="movie in awardMovie | filter: {Award_Id: award.Award_Id}:true" style="text-decoration: none">
+							<li class="list-group-item" ng-repeat="m in movies | filter: {Movie_Id: movie.Movie_Id}:true"><h5>{{m.Movie_Title}} <span class="label label-success">{{movie.Year}}</span> {{movie.Type}}</h5></li>
+							</a>
+							<li class="list-group-item" ng-show="!(awardMovie | filter: {Award_Id: award.Award_Id}:true).length">None</li>
+						</ul>
+						</div>
+					</div>
+				</div>
+
+		    	<div class="panel-group" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" ng-click="isSubCollapsed2 = !isSubCollapsed2"><a href="" style="text-decoration: none"><h4>TV Shows</h4></a></div>
+						<div class="panel-body" ng-show="isSubCollapsed2">
+				    	<ul class="list-group">
+				    		<a href="tvshow/{{tv.Show_Id}}" ng-repeat="tv in awardTV | filter: {Award_Id: award.Award_Id}:true" style="text-decoration: none">
+				    		<li class="list-group-item" ng-repeat="t in tvshow | filter: {Show_Id: tv.Show_Id}:true"><h5>{{t.Title}} <span class="label label-success">{{tv.Year}}</span> {{tv.Type}}</h5>
+				    		<p style="color: black">{{tv.Category}}</p></li>
+				    		</a>
+				    		<li class="list-group-item" ng-show="!(awardTV | filter: {Award_Id: award.Award_Id}:true).length">None</li>
+				    	</ul>
+				    	</div>
+				    </div>
+				</div>
+
+				<div class="panel-group" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" ng-click="isSubCollapsed3 = !isSubCollapsed3"><a href="" style="text-decoration: none"><h4>People</h4></a></div>
+						<div class="panel-body" ng-show="isSubCollapsed3">
+				    	<ul class="list-group">
+				    		<a href="people/{{person.People_Id}}" ng-repeat="person in awardPeople | filter: {Award_Id: award.Award_Id}:true" style="text-decoration: none">
+				    		<li class="list-group-item" ng-repeat="p in people | filter: {People_Id: person.People_Id}:true"><h5>{{p.People_Name}} <span class="label label-success">{{person.Year}}</span> {{person.Type}}</h5>
+				    		<p style="color: black">{{person.Category}}</p></li>
+				    		</a>
+				    		<li class="list-group-item" ng-show="!(awardPeople | filter: {Award_Id: award.Award_Id}:true).length">None</li>
+				    	</ul>
+				    </div>
+				</div>
+		  	</div>
+		</div>
+	</div>
+</div>

@@ -35,7 +35,12 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     .when('/people/:id', {
       title: ' - IMDb2',
       templateUrl: 'partials/people.html',
-      controller: 'PeopleCtrl',
+      controller: 'PeopleCtrl'
+    })
+    .when('/awards', {
+      title: 'Awards - IMDb2',
+      templateUrl: 'partials/awards.html',
+      controller: 'AwardsCtrl'
     })
 		.otherwise({
 			redirectTo: '/'
@@ -629,3 +634,32 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
     });
   }; 
 }); 
+
+
+index.controller('AwardsCtrl', function($scope, $http) {
+  $http.get('api/award').success(function(data) {
+    $scope.awards = data;
+  });
+  $http.get('api/awardMovie/').success(function(data) {
+    $scope.awardMovie = data;
+  });
+  $http.get('api/movies/').success(function(data) {
+    $scope.movies = data;
+  });
+  $http.get('api/awardTV/').success(function(data) {
+    $scope.awardTV = data;
+  });
+  $http.get('api/tvshow/').success(function(data) {
+    $scope.tvshow = data;
+  });
+  $http.get('api/awardPeople/').success(function(data) {
+    $scope.awardPeople = data;
+  });
+  $http.get('api/people/').success(function(data) {
+    $scope.people = data;
+  });
+});
+
+
+
+
