@@ -21,13 +21,7 @@
         <h4 class="modal-title" id="myModalLabel">Edit The TV show.</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal" ng-submit="updateTVshow(tvshow)">
-          <div class="form-group">
-            <label for="inputTVshowId" class="col-sm-3 control-label">TV show ID</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Show_Id" id="inputTVshowId" placeholder="TVshow ID" required>
-            </div>
-          </div>
+        <form class="form-horizontal" ng-submit="updateTVshow()">
           <div class="form-group">
             <label for="inputTVshowTitle" class="col-sm-3 control-label">TVshow Title</label>
             <div class="col-sm-9">
@@ -35,57 +29,57 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inputReleaseDate" class="col-sm-3 control-label">Release Date</label>
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Total Seasons</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.ReleaseDate" id="inputReleaseDate" placeholder="yyyy-mm-dd">
+              <input class="form-control" ng-model="form.Season" id="inputReleaseDate" placeholder="Season">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputDuration" class="col-sm-3 control-label">Duration</label>
+            <label for="inputDuration" class="col-sm-3 control-label">Length of each episode</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Duration" id="inputDuration" placeholder="min">
+              <input class="form-control" ng-model="form.Length" id="inputDuration" placeholder="min">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputRating" class="col-sm-3 control-label">Rating</label>
+            <label for="inputRating" class="col-sm-3 control-label">Image Source</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Rating" id="inputRating" placeholder="0.0-10.0">
+              <input class="form-control" ng-model="form.Img_Src" id="inputRating" placeholder="http://...">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputDirector" class="col-sm-3 control-label">Director</label>
+            <label for="inputDirector" class="col-sm-3 control-label">Country</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Director" id="inputDirector" placeholder="Director">
+              <input class="form-control" ng-model="form.Country" id="inputDirector" placeholder="Country">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputImgSrc" class="col-sm-3 control-label">Image</label>
+            <label for="inputImgSrc" class="col-sm-3 control-label">Language</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.ImgSrc" id="inputImgSrc" placeholder="http://">
+              <input class="form-control" ng-model="form.Language" id="inputImgSrc" placeholder="Language">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
+            <label for="inputDescription" class="col-sm-3 control-label">Start Year</label>
             <div class="col-sm-9">
-              <textarea class="form-control" ng-model="form.Description" id="inputDescription" rows="3" placeholder="Description"></textarea>
+              <input class="form-control" ng-model="form.Start_Year" id="inputDescription" placeholder="yyyy">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputCountry" class="col-sm-3 control-label">Country</label>
+            <label for="inputCountry" class="col-sm-3 control-label">End Year</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Country" id="inputCountry" placeholder="Country">
+              <input class="form-control" ng-model="form.End_Year" id="inputCountry" placeholder="yyyy">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputLanguage" class="col-sm-3 control-label">Language</label>
+            <label for="inputLanguage" class="col-sm-3 control-label">Rating</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Language" id="inputLanguage" placeholder="Language">
+              <input class="form-control" ng-model="form.Rating" id="inputLanguage" placeholder="0.0-10.0">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputCompany" class="col-sm-3 control-label">Company</label>
+            <label for="inputLanguage" class="col-sm-3 control-label">Description</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Company" id="inputCompany" placeholder="Company">
+              <textarea class="form-control" ng-model="form.Description" id="inputLanguage" rows="3" placeholder="Description."></textarea>
             </div>
           </div>
           <div class="modal-footer">
@@ -106,8 +100,10 @@
   <div class="col-md-7">
     
     <p class="lead text-justify" style="text-indent: 2em;">{{tvshow.Description}}</p>
-    <h4><span class="text-muted">Director: </span> </h4>
-    <h4><span class="text-muted">Duration: </span> {{tvshow.Length}} min</h4>
+    <h4><span class="text-muted">Director: </span> <a href="people/{{director.People_Id}}" ng-repeat="director in directors"><span ng-repeat="d in people | filter: {People_Id: director.People_Id}">{{d.People_Name}}</span> </a> </h4>
+    <h4><span class="text-muted">Writer: </span> <a href="people/{{writer.People_Id}}" ng-repeat="writer in writers"><span ng-repeat="w in people | filter: {People_Id: writer.People_Id}">{{w.People_Name}}</span> </a> </h4>
+    <h4><span class="text-muted">Total Season: </span> {{tvshow.Season}}</h4>
+    <h4><span class="text-muted">Length of each Episode: </span> {{tvshow.Length}} min</h4>
     <h4><span class="text-muted">Country: </span> {{tvshow.Country}}</h4>
     <h4><span class="text-muted">Language: </span> {{tvshow.Language}}</h4>
   </div>
@@ -118,14 +114,14 @@
 
 <!-- Episodes START -->
 <div class="panel-group" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default">
+  <div class="panel panel-primary">
     <div class="panel-heading" ng-click="isCollapsed = !isCollapsed">
       <a href="" style="text-decoration: none">
-        <h4>Episodes</h4>
+        <h4 style="color: white">Episodes</h4>
       </a>
     </div>
-
     <div class="panel-body" ng-show="isCollapsed">
+    <button class="btn btn-default" href="" data-toggle="modal" data-target="#addDetail"><span aria-hidden="true" class="glyphicon glyphicon-plus" ></span> Add</button>
       <ul class="list-group">
         <a href="tvshow/{{m.Show_Id}}/{{m.Season}}/{{m.Episode}}" ng-repeat="m in tvshowdetail | object2Array | orderBy: ['Season', 'Episode']" style="text-decoration: none">
           <li class="list-group-item">
@@ -170,7 +166,7 @@
   </span>
 </h2>
 <div class="list-group">
-<a href="" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
+<a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions">
   <div class="row container">
     <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
       <small>{{award.Year}}</small>    {{award.Type}}
@@ -245,6 +241,69 @@
             <label for="inputReleaseDate" class="col-sm-3 control-label">Type</label>
             <div class="col-sm-9">
               <input class="form-control" ng-model="form3.Type" placeholder="Won or Nominated" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit TVShowDetail-->
+<div class="modal fade" id="addDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add The Episode.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="addDetail()">
+          <div class="form-group">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">Season</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Season" id="inputTitle" placeholder="Season" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">Episode</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Episode" id="inputTitle" placeholder="Episode" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">Episode Title</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Title" id="inputTitle" placeholder="Episode Title" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Release Date</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Release_Date" id="inputReleaseDate" placeholder="yyyy-mm-dd">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputRating" class="col-sm-3 control-label">Rating</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Rating" id="inputRating" placeholder="0.0-10.0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputImgSrc" class="col-sm-3 control-label">Image Source</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form2.Img_Src" id="inputImgSrc" placeholder="http://...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" ng-model="form2.Description" id="inputDescription" rows="3" placeholder="Description"></textarea>
             </div>
           </div>
           <div class="modal-footer">

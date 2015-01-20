@@ -29,16 +29,18 @@ module.exports = function(app) {
 		Language: String,
 		Start_Year: String,
 		End_Year: String,
-		Rating: Number
+		Rating: Number,
+		Description: String
 	})
 
 	var TVShowDetailSchema = new mongoose.Schema({
 		Show_Id: String,
-		Show_Title: String,
+		Title: String,
 		Release_Date: String,
 		Season: String,
 		Rating: Number,
 		Episode: String,
+		Img_Src: String,
 		Description: String
 	})
 
@@ -95,9 +97,9 @@ module.exports = function(app) {
 	});
 
 	var Direct_TVSchema = new mongoose.Schema({
-		People_ID: String,
+		People_Id: String,
 		Show_Id: String,
-		Episode: Number,
+		Episodes: Number
 	})
 
 	var Write_MovieSchema = new mongoose.Schema({
@@ -107,7 +109,7 @@ module.exports = function(app) {
 
 	var Write_TVShowSchema = new mongoose.Schema({
 		People_Id: String,
-		Show_Id: String,
+		Show_Id: String
 	})
 
 	var Movie_GenresSchema = new mongoose.Schema({
@@ -132,7 +134,7 @@ module.exports = function(app) {
 	var ActTVShow = mongoose.model('ActTVShow', actTVShowSchema, 'ACT_TV');
 	var DirectTV = mongoose.model('DirectTV', Direct_TVSchema, 'DIRECT_TV');
 	var WriteMovie = mongoose.model('WriteMovie', Write_MovieSchema, 'WRITE_MOVIE');
-	var WriteTVShow = mongoose.model('WriteTVShow', Write_TVShowSchema, 'WRITE_TV');
+	var WriteTV = mongoose.model('WriteTV', Write_TVShowSchema, 'WRITE_TV');
 	var MovieGenres = mongoose.model('Moviegenres', Movie_GenresSchema, 'MOVIE_GENRES');
 	var TVGenres = mongoose.model('TVgenres', TV_GenresSchema, 'TV_GENRES');
 	var Award = mongoose.model('Award', awardSchema, 'AWARD');
@@ -374,15 +376,15 @@ module.exports = function(app) {
 	  var tvshowdetail;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  tvshow = new TVShowDetail({
+	  tvshowdetail = new TVShowDetail({
 	  	Show_Id: req.body.Show_Id,
 		Title: req.body.Title,
 		Season: req.body.Season,
 		Release_Date: req.body.Release_Date,
 		Rating: req.body.Rating,
 		Episode: req.body.Episode,
+		Img_Src: req.body.Img_Src,
 		Description: req.body.Description
-
 	  });
 	  tvshowdetail.save(function (err) {
 	    if (!err) {
@@ -420,6 +422,7 @@ module.exports = function(app) {
 		
 		tvshowdetail.Rating = req.body.Rating;
 		tvshowdetail.Episode= req.body.Episode;
+		tvshowdetail.Img_Src = req.body.Img_Src;
 		tvshowdetail.Description = req.body.Description;
 		
 	    return tvshowdetail.save(function (err) {
@@ -1066,7 +1069,7 @@ module.exports = function(app) {
 
 	//--------------------------------DirectTV START-----------------------------
 	//GET METHOD OF DirectTV.
-	app.get('/api/driectTV', function(req, res){
+	app.get('/api/directTV', function(req, res){
 		return DirectTV.find(function(err, doc){
 			if(!err){
 				return res.send(doc);
@@ -1078,7 +1081,19 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF DirectTV.
-	app.get('/api/driectTV/:sid/:pid', function(req, res){
+	app.get('/api/directTV/:sid', function(req, res){
+		return DirectTV.find({Show_Id: req.params.sid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF DirectTV.
+	app.get('/api/directTV/:sid/:pid', function(req, res){
 		return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
@@ -1090,14 +1105,14 @@ module.exports = function(app) {
 	});
 
 	//POST to CREATE DIRECT_TV
-	app.post('/api/driectTV', function (req, res) {
+	app.post('/api/directTV', function (req, res) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
 	  doc = new DirectTV({
 	  	Show_Id: req.body.Show_Id,
 	  	People_Id: req.body.People_Id,
-	  	Episode: req.body.Episode
+	  	Episodes: req.body.Episodes
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1110,7 +1125,7 @@ module.exports = function(app) {
 	});
 
 	//remove a single doc from DIRECT_TV
-	app.delete('/api/driectTV/:sid/:pid', function (req, res) {
+	app.delete('/api/directTV/:sid/:pid', function (req, res) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
@@ -1125,11 +1140,11 @@ module.exports = function(app) {
 	});
 
 	//Single act update
-	app.put('/api/driectTV/:mid/:pid', function (req, res) {
+	app.put('/api/directTV/:mid/:pid', function (req, res) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.People_Id = req.body.People_Id;
-	  	doc.Episode = req.body.Episode;
+	  	doc.Episodes = req.body.Episodes;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
@@ -1235,6 +1250,18 @@ module.exports = function(app) {
 	//GET METHOD OF WriteTV.
 	app.get('/api/writeTV', function(req, res){
 		return WriteTV.find(function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY TVShow ID OF WriteTV.
+	app.get('/api/writeTV/:sid', function(req, res){
+		return WriteTV.find({Show_Id: req.params.sid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
