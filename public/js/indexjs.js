@@ -623,7 +623,7 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
 }); 
 
 
-index.controller('AwardsCtrl', function($scope, $http) {
+index.controller('AwardsCtrl', function($scope, $http, $window) {
   $http.get('api/award').success(function(data) {
     $scope.awards = data;
   });
@@ -645,6 +645,51 @@ index.controller('AwardsCtrl', function($scope, $http) {
   $http.get('api/people/').success(function(data) {
     $scope.people = data;
   });
+  $scope.addAward = function() {
+    var aid = $scope.form.Award_Id;
+    $http.get('api/award/'+aid).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/award/'+aid,
+          data: $.param({
+            Award_Id: aid,
+            Award_Name: $scope.form.Award_Name,
+            Description: $scope.form.Description,
+            Img_Src: $scope.form.Img_Src
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/awards/';
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/award/',
+          data: $.param({
+            Award_Id: aid,
+            Award_Name: $scope.form.Award_Name,
+            Description: $scope.form.Description,
+            Img_Src: $scope.form.Img_Src
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/awards/';
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var aid = data.Award_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/award/'+aid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/awards/';
+    });
+  };
 });
 
 
