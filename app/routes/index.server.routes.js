@@ -1265,7 +1265,17 @@ module.exports = function(app) {
 			}
 		});
 	});
-
+	//GET METHOD BY PEOPLE ID OF WriteTV
+	app.get('/api/writeTV/:pid', function(req, res){
+		return WriteTV.find({People_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
 	//POST to CREATE WriteTV
 	app.post('/api/writeTV', function (req, res) {
 	  var doc;

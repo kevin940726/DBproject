@@ -417,9 +417,12 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/directTV/'+$routeParams.id).success(function(data) {
     $scope.direct = data;
   }); 
+  $http.get('api/writeTV/'+$routeParams.id).success(function(data) {
+    $scope.write = data;
+  });
   $http.get('api/tvshow/').success(function(data) {
     $scope.tvshow = data;
-  }); 
+  });
   $scope.randomPerson = function(data) {
     var rand = Math.floor((Math.random()*data));
     while (rand === $routeParams.id*1){
@@ -543,6 +546,38 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       }
     });
   };
+  $scope.updateWriteTV = function() {
+    var pid = $routeParams.id;
+    var sid = $scope.form3.Show_Id;
+    $http.get('api/writeTV/'+sid+'/'+pid ).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/writeTV/'+sid+'/'+pid,
+          data: $.param({
+            People_Id: pid,
+            Show_Id: sid,
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/writeTV',
+          data: $.param({
+            People_Id: pid,
+            Show_Id: sid,
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+    });
+  };
   $scope.deleteAward = function(data) {
     var pid = data.People_Id;
     var aid = data.Award_Id;
@@ -556,7 +591,28 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       $window.location.href = '/people/'+pid;
     });
   };
-
+  $scope.deleteDirectTV = function(data) {
+    var pid = data.People_Id;
+    var sid = data.Show_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardPeople/'+sid+'/'+pid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people/'+pid;
+    });
+  };
+  $scope.deleteWriteTV = function(data) {
+    var pid = data.People_Id;
+    var sid = data.Show_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardPeople/'+sid+'/'+pid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people/'+pid;
+    });
+  };
 }); 
 
 index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
