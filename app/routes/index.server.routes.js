@@ -1079,6 +1079,18 @@ module.exports = function(app) {
 		});
 	});
 
+	// GET METHOD BY PEOPLE ID OF DirectTV
+	app.get('/api/directTV/show/:sid', function(req, res){
+		return DirectTV.find({Show_Id: req.params.sid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
 	//GET METHOD BY MOVIE ID OF DirectTV.
 	app.get('/api/directTV/:pid/:sid', function(req, res){
 		return DirectTV.findOne({People_Id: req.params.pid, Show_Id: req.params.sid} ,  function(err, doc){
@@ -1090,6 +1102,8 @@ module.exports = function(app) {
 			}
 		});
 	});
+
+	
 
 	// GET METHOD BY PEOPLE ID OF DirectTV
 	app.get('/api/directTV/:pid', function(req, res){

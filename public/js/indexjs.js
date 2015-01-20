@@ -724,7 +724,7 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
     $scope.tvshows = data;
     $scope.total = data.length;
   });
-  $http.get('api/directTV/'+$routeParams.id).success(function(data) {
+  $http.get('api/directTV/show/'+$routeParams.id).success(function(data) {
     $scope.directors = data;
   });
   $http.get('api/writeTV/'+$routeParams.id).success(function(data) {
