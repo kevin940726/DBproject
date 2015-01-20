@@ -3,7 +3,6 @@
   <ul class="pager">
     <li class="previous"><a href="tvshow/{{tvshow.Show_Id*1 === 0 ? total-1 : tvshow.Show_Id*1-1}}"><span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span> Prev</a></li>
     <li class="tvshowlist"><a href="tvshow"><span aria-hidden="true" class="glyphicon glyphicon-th-list"></span> List</a></li>
-    <li class="random"><a ng-click="randomTVShow(total)" href=""><span aria-hidden="true" class="glyphicon glyphicon-random"></span> Random</a></li>
     <li class="next"><a href="tvshow/{{tvshow.Show_Id*1 === total-1 ? 0 : tvshow.Show_Id*1+1}}">Next <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a></li>
   </ul>
 </nav>
@@ -102,7 +101,7 @@
 
 <div class="row featurette">
   <div class="col-md-3">
-    <a href="{{tvshow.Img_Src}}"><img class="featurette-image img-responsive" src="{{tvshow.Img_Src}}" alt="{{tvshow.TVshow_Title}}"/></a>
+    <a href="{{tvshow.Img_Src}}"><img class="featurette-image img-responsive" src="{{tvshow.Img_Src.length ? tvshow.Img_Src : 'img/alt.png'}}" alt="{{tvshow.TVshow_Title}}"/></a>
   </div>
   <div class="col-md-7">
     
@@ -155,7 +154,8 @@
     </h4></div>
     <button href="" class="btn btn-link" ng-click="deleteAct(cast)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
-</a> 
+</a>
+<h4 class="list-group-item clearfix" ng-show="!acts.length">None</h4>  
 </div>
 
 
@@ -177,7 +177,8 @@
     </h4></div>
     <button href="" class="btn btn-link" ng-click="deleteAward(award)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
-</a> 
+</a>
+<h4 class="list-group-item clearfix" ng-show="!awards.length">None</h4> 
 </div>
 
 

@@ -3,7 +3,6 @@
   <ul class="pager">
     <li class="previous"><a href="people/{{person.People_Id*1 === 0 ? total-1 : person.People_Id*1-1}}"><span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span> Prev</a></li>
     <li class="peoplelist"><a href="people"><span aria-hidden="true" class="glyphicon glyphicon-th-list"></span> List</a></li>
-    <li class="random"><a ng-click="randomPerson(total)" href=""><span aria-hidden="true" class="glyphicon glyphicon-random"></span> Random</a></li>
     <li class="next"><a href="people/{{person.People_Id*1 === total-1 ? 0 : person.People_Id*1+1}}">Next <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a></li>
   </ul>
 </nav>
@@ -72,15 +71,32 @@
 
 <div class="row featurette">
   <div class="col-md-3">
-    <a href="{{person.Img_Src}}"><img class="featurette-image img-responsive" src="{{person.Img_Src}}" alt="{{person.People_Name}}"/></a>
+    <a href="{{person.Img_Src}}"><img class="featurette-image img-responsive" src="{{person.Img_Src.length ? person.Img_Src : 'img/alt.png'}}" alt="{{person.People_Name}}"/></a>
   </div>
   <div class="col-md-7">
     
-    <h4><span class="text-muted">Birth Date: </span> {{person.Birth_Date}}</h4>
-    <h4><span class="text-muted">Country: </span> {{person.Country}}</h4>
+    <h4><span class="text-muted">Birth Date: </span> {{person.Birth_Date ? person.Birth_Date : "Unknown"}}</h4>
+    <h4><span class="text-muted">Country: </span> {{person.Country ? person.Country : "Unknown"}}</h4>
     <p class="lead text-justify" style="text-indent: 2em;">{{person.Description}}</p>
     
   </div>
 </div>
 
 <br></br>
+
+<h2>Award
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
+<div class="list-group">
+<a href="awards" class="list-group-item clearfix" ng-repeat="award in awards | object2Array | orderBy: ['-Year', '-Award_Id', 'Type']" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
+  <div class="row container">
+    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
+      <small>{{award.Year}}</small>    {{award.Type}}
+    </h4></div>
+    <button href="" class="btn btn-link" ng-click="deleteAward(award)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+  </div>
+</a> 
+<h4 class="list-group-item" ng-show="!awards.length">None</h4>
+</div>

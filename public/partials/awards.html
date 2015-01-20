@@ -3,7 +3,7 @@
 	  <nav>
 	    <ul class="pager">
 	      <li class="previous"><a href="/"><span aria-hidden="true" class="glyphicon glyphicon-home"></span> Home</a></li>
-	      <li class="next"><a href="" data-toggle="modal" data-target="#addMovie"><span aria-hidden="true" class="glyphicon glyphicon-plus" ></span> Add</a></li>
+	      <li class="next"><a href="" data-toggle="modal" data-target="#addAward"><span aria-hidden="true" class="glyphicon glyphicon-plus" ></span> Add/ Edit</a></li>
 	    </ul>
 	  </nav>
 	</form>
@@ -11,10 +11,11 @@
 
 	<div class="panel-group" role="tablist" aria-multiselectable="true">
 		<div class="panel panel-default" ng-repeat="award in awards">
-		  	<div class="panel-heading" ng-click="isCollapsed = !isCollapsed"><a href="" style="text-decoration: none">
+		  	<div class="panel-heading" ng-click="isCollapsed = !isCollapsed" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false"><a href="" style="text-decoration: none">
 		  		<div class="row">
-		  		<div class="col-md-2"><img class="img-responsive img-thumbnail" style="height: 130px;" src="{{award.Img_Src}}"/></div>
-		  		<div class="col-md-10"><h3>{{award.Award_Name}}</h3></div>
+		  		<div class="col-md-2"><img class="img-responsive img-thumbnail" style="height: 130px;" src="{{award.Img_Src.length ? award.Img_Src : 'img/awardAlt.png'}}"/></div>
+		  		<div class="col-md-9"><h3>{{award.Award_Name}}</h3></div>
+		  		<button href="" class="btn btn-link" ng-click="deleteAward(award)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
 		  		</div>
 		  	</a></div>
 		  	<div class="panel-body" ng-show="isCollapsed">
@@ -64,4 +65,49 @@
 		  	</div>
 		</div>
 	</div>
+</div>
+
+<!-- Modal Edit Movie-->
+<div class="modal fade" id="addAward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add/Edit The Award.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="addAward()">
+          <div class="form-group">
+            <label for="inputMovieId" class="col-sm-3 control-label">Award ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Award_Id" placeholder="Award ID" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">Award Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Award_Name" placeholder="Award Name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReleaseDate" class="col-sm-3 control-label">Image Source</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form.Img_Src" placeholder="http://...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" ng-model="form.Description" rows="3" placeholder="Description."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
 </div>

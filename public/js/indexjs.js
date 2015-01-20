@@ -137,6 +137,9 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/award').success(function(data){
     $scope.awardsName = data;
   });
+  $http.get('api/writeMovie/'+$routeParams.id).success(function(data) {
+    $scope.writers = data;
+  })
   $http.get('/api/movies/'+$routeParams.id).success(function(data) {
     if (data.length !== 0) $scope.movie = data;
     else $location.path("/movies");
@@ -153,14 +156,6 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       });
     });
 	});	
-  $scope.randomMovie = function(data) {
-    var rand = Math.floor((Math.random()*data));
-    while (rand === $routeParams.id*1){
-      rand = Math.floor((Math.random()*data));
-    }
-    $location.path("/movies/"+rand);
-    return rand;
-  };
   $scope.removeMovie = function(data) {
     var id = data.Movie_Id;
     $http({
@@ -407,6 +402,12 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     $http.get('api/people/').success(function(data) {
       $scope.people = data;
     });
+  });
+  $http.get('api/awardPeople/'+$routeParams.id).success(function(data) {
+    $scope.awards = data;
+  });
+  $http.get('api/award/').success(function(data) {
+    $scope.awardsName = data;
   }); 
   $scope.randomPerson = function(data) {
     var rand = Math.floor((Math.random()*data));
@@ -415,16 +416,6 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     }
     $location.path("/people/"+rand);
     return rand;
-  };
-  $scope.removePerson = function(data) {
-    var id = data.People_Id;
-    $http({
-      method: 'DELETE',
-      url: 'api/people/'+id,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    }).success(function() {
-      $location.path("/people");
-    });
   };
   $scope.formset = function(data) {
     $scope.form = {
@@ -484,16 +475,6 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
       $scope.acts = data;
     })
   }); 
-  $scope.removeTVshow = function(data) {
-    var id = data.Show_Id;
-    $http({
-      method: 'DELETE',
-      url: 'api/tvshow/'+id,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    }).success(function() {
-      $location.path("/tvshow");
-    });
-  };
   $scope.formset = function(data) {
     $scope.form = {
       Show_Id: data.Show_Id,
@@ -620,7 +601,7 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
 }); 
 
 
-index.controller('AwardsCtrl', function($scope, $http) {
+index.controller('AwardsCtrl', function($scope, $http, $window) {
   $http.get('api/award').success(function(data) {
     $scope.awards = data;
   });
@@ -642,6 +623,51 @@ index.controller('AwardsCtrl', function($scope, $http) {
   $http.get('api/people/').success(function(data) {
     $scope.people = data;
   });
+  $scope.addAward = function() {
+    var aid = $scope.form.Award_Id;
+    $http.get('api/award/'+aid).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/award/'+aid,
+          data: $.param({
+            Award_Id: aid,
+            Award_Name: $scope.form.Award_Name,
+            Description: $scope.form.Description,
+            Img_Src: $scope.form.Img_Src
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/awards/';
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/award/',
+          data: $.param({
+            Award_Id: aid,
+            Award_Name: $scope.form.Award_Name,
+            Description: $scope.form.Description,
+            Img_Src: $scope.form.Img_Src
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/awards/';
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var aid = data.Award_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/award/'+aid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/awards/';
+    });
+  };
 });
 
 
