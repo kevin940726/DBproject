@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 module.exports = function(app) {
-    //var index = require('../controllers/index.server.controller');
 
-/*-----------------------schemas START-----------------------*/
+	/*-----------------------schemas START-----------------------*/
 	var movieSchema = new mongoose.Schema({
 		Movie_Id: String,
 		Movie_Title: String,
@@ -29,16 +28,18 @@ module.exports = function(app) {
 		Language: String,
 		Start_Year: String,
 		End_Year: String,
-		Rating: Number
+		Rating: Number,
+		Description: String
 	})
 
 	var TVShowDetailSchema = new mongoose.Schema({
 		Show_Id: String,
-		Show_Title: String,
+		Title: String,
 		Release_Date: String,
 		Season: String,
 		Rating: Number,
 		Episode: String,
+		Img_Src: String,
 		Description: String
 	})
 
@@ -97,7 +98,7 @@ module.exports = function(app) {
 	var Direct_TVSchema = new mongoose.Schema({
 		People_Id: String,
 		Show_Id: String,
-		Episodes: Number,
+		Episodes: Number
 	})
 
 	var Write_MovieSchema = new mongoose.Schema({
@@ -107,17 +108,17 @@ module.exports = function(app) {
 
 	var Write_TVShowSchema = new mongoose.Schema({
 		People_Id: String,
-		Show_Id: String,
+		Show_Id: String
 	})
 
 	var Movie_GenresSchema = new mongoose.Schema({
 		Movie_Id: String,
-		Genres: String,
+		Genre: String,
 	})
 
 	var TV_GenresSchema = new mongoose.Schema({
 		Show_Id: String,
-		Genres: String,
+		Genre: String,
 	})
 
 /*-----------------------schemas END-----------------------*/
@@ -132,9 +133,9 @@ module.exports = function(app) {
 	var ActTVShow = mongoose.model('ActTVShow', actTVShowSchema, 'ACT_TV');
 	var DirectTV = mongoose.model('DirectTV', Direct_TVSchema, 'DIRECT_TV');
 	var WriteMovie = mongoose.model('WriteMovie', Write_MovieSchema, 'WRITE_MOVIE');
-	var WriteTVShow = mongoose.model('WriteTVShow', Write_TVShowSchema, 'WRITE_TV');
-	var MovieGenres = mongoose.model('Moviegenres', Movie_GenresSchema, 'MOVIE_GENRES');
-	var TVGenres = mongoose.model('TVgenres', TV_GenresSchema, 'TV_GENRES');
+	var WriteTV = mongoose.model('WriteTV', Write_TVShowSchema, 'WRITE_TV');
+	var MovieGenre = mongoose.model('MovieGenre', Movie_GenresSchema, 'MOVIE_GENRES');
+	var TVGenres = mongoose.model('TVGenres', TV_GenresSchema, 'TV_GENRES');
 	var Award = mongoose.model('Award', awardSchema, 'AWARD');
 	var AwardMovie = mongoose.model('AwardMovie', awardMovieSchema, 'AWARD_MOVIE');
 	var AwardPeople = mongoose.model('AwardPeople', awardPeopleSchema, 'AWARD_PEOPLE');
@@ -374,15 +375,15 @@ module.exports = function(app) {
 	  var tvshowdetail;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  tvshow = new TVShowDetail({
+	  tvshowdetail = new TVShowDetail({
 	  	Show_Id: req.body.Show_Id,
 		Title: req.body.Title,
 		Season: req.body.Season,
 		Release_Date: req.body.Release_Date,
 		Rating: req.body.Rating,
 		Episode: req.body.Episode,
+		Img_Src: req.body.Img_Src,
 		Description: req.body.Description
-
 	  });
 	  tvshowdetail.save(function (err) {
 	    if (!err) {
@@ -420,6 +421,7 @@ module.exports = function(app) {
 		
 		tvshowdetail.Rating = req.body.Rating;
 		tvshowdetail.Episode= req.body.Episode;
+		tvshowdetail.Img_Src = req.body.Img_Src;
 		tvshowdetail.Description = req.body.Description;
 		
 	    return tvshowdetail.save(function (err) {
@@ -1088,6 +1090,7 @@ module.exports = function(app) {
 			}
 		});
 	});
+
 	// GET METHOD BY PEOPLE ID OF DirectTV
 	app.get('/api/directTV/:pid', function(req, res){
 		return DirectTV.find({People_Id: req.params.pid}, function(err, doc){
@@ -1107,7 +1110,7 @@ module.exports = function(app) {
 	  doc = new DirectTV({
 	  	People_Id: req.body.People_Id,
 	  	Show_Id: req.body.Show_Id,
-	  	Episodes: req.body.Episodes,
+	  	Episodes: req.body.Episodes
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1255,6 +1258,18 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY TVShow ID OF WriteTV.
+	app.get('/api/writeTV/:sid', function(req, res){
+		return WriteTV.find({Show_Id: req.params.sid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY TVShow ID OF WriteTV.
 	app.get('/api/writeTV/:sid/:pid', function(req, res){
 		return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
@@ -1342,8 +1357,20 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF Moviegenres.
+	app.get('/api/moviegenres/:mid', function(req, res){
+		return MovieGenre.find({Movie_Id: req.params.mid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF Moviegenres.
 	app.get('/api/moviegenres/:mid/:gid', function(req, res){
-		return movieGenres.findOne({Movie_Id: req.params.mid, Genres: req.params.gid}, function(err, doc){
+		return MovieGenre.findOne({Movie_Id: req.params.mid, Genre: req.params.gid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1358,9 +1385,9 @@ module.exports = function(app) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  doc = new MovieGenres({
+	  doc = new MovieGenre({
 	  	Movie_Id: req.body.Movie_Id,
-	  	Genres: req.body.Genres
+	  	Genre: req.body.Genre
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1374,7 +1401,7 @@ module.exports = function(app) {
 
 	//remove a single doc from Moviegenres
 	app.delete('/api/moviegenres/:mid/:gid', function (req, res) {
-	  return MovieGenres.findOne({Movie_Id: req.params.mid, Genres: req.params.gid}, function (err, doc) {
+	  return MovieGenre.findOne({Movie_Id: req.params.mid, Genre: req.params.gid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1389,9 +1416,9 @@ module.exports = function(app) {
 
 	//Single act update
 	app.put('/api/moviegenres/:mid/:gid', function (req, res) {
-	  return MovieGenres.findOne({Movie_Id: req.params.mid, Genres: req.params.gid}, function (err, doc) {
+	  return MovieGenre.findOne({Movie_Id: req.params.mid, Genre: req.params.gid}, function (err, doc) {
 	  	doc.Movie_Id = req.body.Movie_Id;
-	  	doc.Genres = req.body.Genres;
+	  	doc.Genre = req.body.Genre;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
@@ -1418,8 +1445,20 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF TVgenres.
+	app.get('/api/TVgenres/:sid', function(req, res){
+		return TVGenres.find({Show_Id: req.params.sid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF TVgenres.
 	app.get('/api/TVgenres/:sid/:gid', function(req, res){
-		return TVGenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function(err, doc){
+		return TVGenres.findOne({Show_Id: req.params.sid, Genre: req.params.gid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1436,7 +1475,7 @@ module.exports = function(app) {
 	  console.log(req.body);
 	  doc = new TVGenres({
 	  	Show_Id: req.body.Show_Id,
-	  	Genres: req.body.Genres
+	  	Genre: req.body.Genre
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1450,7 +1489,7 @@ module.exports = function(app) {
 
 	//remove a single doc from TVgenres
 	app.delete('/api/TVgenres/:sid/:gid', function (req, res) {
-	  return TVgenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function (err, doc) {
+	  return TVGenres.findOne({Show_Id: req.params.sid, Genre: req.params.gid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1465,9 +1504,9 @@ module.exports = function(app) {
 
 	//Single act update
 	app.put('/api/TVgenres/:sid/:gid', function (req, res) {
-	  return TVgenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function (err, doc) {
+	  return TVGenres.findOne({Show_Id: req.params.sid, Genre: req.params.gid}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
-	  	doc.Genres = req.body.Genres;
+	  	doc.Genre = req.body.Genre;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");

@@ -14,7 +14,7 @@
   <span class="label label-info">{{detail.Season}}-{{detail.Episode}}</span> 
   {{detail.Title}} 
   <small>({{detail.Release_Date}})</small> <span class="label label-warning">{{detail.Rating}}</span>
-  <a href="" data-toggle="modal" data-target="#updateMovie"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a>
+  <a href="" data-toggle="modal" data-target="#updateDetail"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a>
   <a href="" class="btn" ng-click="removeDetail(detail)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></a>
   </h1>
 </div>
@@ -28,13 +28,7 @@
         <h4 class="modal-title" id="myModalLabel">Edit The Detail.</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal" ng-submit="updateDetail(detail)">
-          <div class="form-group">
-            <label for="inputShowId" class="col-sm-3 control-label">Show ID</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Show_Id" id="inputShowId" placeholder="Show ID" required>
-            </div>
-          </div>
+        <form class="form-horizontal" ng-submit="updateDetail()">
           <div class="form-group">
             <label for="inputMovieTitle" class="col-sm-3 control-label">Title</label>
             <div class="col-sm-9">
@@ -44,13 +38,7 @@
           <div class="form-group">
             <label for="inputReleaseDate" class="col-sm-3 control-label">Release Date</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.ReleaseDate" id="inputReleaseDate" placeholder="yyyy-mm-dd">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputDuration" class="col-sm-3 control-label">Duration</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Duration" id="inputDuration" placeholder="min">
+              <input class="form-control" ng-model="form.Release_Date" id="inputReleaseDate" placeholder="yyyy-mm-dd">
             </div>
           </div>
           <div class="form-group">
@@ -60,39 +48,15 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inputDirector" class="col-sm-3 control-label">Director</label>
+            <label for="inputImgSrc" class="col-sm-3 control-label">Image Source</label>
             <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Director" id="inputDirector" placeholder="Director">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputImgSrc" class="col-sm-3 control-label">Image</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.ImgSrc" id="inputImgSrc" placeholder="http://">
+              <input class="form-control" ng-model="form.Img_Src" id="inputImgSrc" placeholder="http://...">
             </div>
           </div>
           <div class="form-group">
             <label for="inputDescription" class="col-sm-3 control-label">Description</label>
             <div class="col-sm-9">
               <textarea class="form-control" ng-model="form.Description" id="inputDescription" rows="3" placeholder="Description"></textarea>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputCountry" class="col-sm-3 control-label">Country</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Country" id="inputCountry" placeholder="Country">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputLanguage" class="col-sm-3 control-label">Language</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Language" id="inputLanguage" placeholder="Language">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputCompany" class="col-sm-3 control-label">Company</label>
-            <div class="col-sm-9">
-              <input class="form-control" ng-model="form.Company" id="inputCompany" placeholder="Company">
             </div>
           </div>
           <div class="modal-footer">
@@ -110,15 +74,9 @@
 
 <div class="row featurette">
   <div class="col-md-3">
-    <a href="{{detail.Img_Src}}"><img class="featurette-image img-responsive" src="{{detail.Img_Src}}" alt="{{detail.Title}}"/></a>
+    <a href="{{detail.Img_Src}}"><img class="featurette-image img-responsive" src="{{detail.Img_Src.length ? detail.Img_Src : 'img/alt.png'}}" alt="{{detail.Title}}"/></a>
   </div>
   <div class="col-md-7">
-    
-    <!-- <p class="lead text-justify" style="text-indent: 2em;">{{detail.Description}}</p> -->
-    <h4><span class="text-muted">Season: </span> {{detail.Season}}</h4>
-    <h4><span class="text-muted">Episode: </span> {{detail.Episode}}</h4>
-    <h4><span class="text-muted">Title: </span> {{detail.Title}}</h4>
-    <h4><span class="text-muted">Rating: </span> {{detail.Rating}}</h4>
     <p style = "text-indent: 2em" class="lead text-justify">{{detail.Description}}</p>
   </div>
 </div>

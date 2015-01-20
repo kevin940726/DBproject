@@ -1,7 +1,7 @@
 <div ng-controller="mainCtrl">
 <div class="jumbotron">
 <h1>Welcome to IMDb2</h1>
-<p>IMDb2, Internet Movies Database 2 ,aalso as Information Management Database 2, is the website which stores the movies, TV shows, and people data. The source of the data is come from IMDb, which is the well-known online movies database. We use their open data to build this website for practicing and studying. The rights of all the data is belong to the original owner.</p>
+<p>IMDb2, Internet Movies Database 2 ,also known as Information Management Database 2, is the website which stores the movies, TV shows, and people data. The source of the data is come from IMDb, which is the well-known online movies database. We use their open data to build this website for practicing and studying. The rights of all the data is belong to the original owner.</p>
 <p class = "row">
     <div class="col-md-2">
     <a class="btn btn-lg btn-primary" href="movies" role="button">Movies List &raquo;</a>
@@ -11,6 +11,9 @@
     </div>
     <div class="col-md-2">
     <a class="btn btn-lg btn-primary" href="people" role="button" style="margin-left: 20px">People List &raquo;</a>
+    </div>
+    <div class="col-md-2">
+    <a class="btn btn-lg btn-primary" href="awards" role="button" style="margin-left: 20px">Awards &raquo;</a>
     </div>
     <br></br>
 </p>
@@ -49,11 +52,11 @@
 </div>
 <div class="row featurette">
     <div class="col-md-7">
-        <h2 class="featurette-heading">Movies. <span class="text-muted">It'll blow your mind.</span></h2>
-        <p class="lead">在這個分頁中，我們列出了從以前到現在，獲得各界人士極高評價的電影，如經典之作；刺激1995、教父等，各電影的詳細資料，及主要演員名單，讓你重溫當年電影所帶給你的悸動</p>
+        <h2 class="featurette-heading">Movies</h2>
+        <p class="lead text-justify">在這個分頁中，我們列出了從以前到現在，獲得各界人士極高評價的電影，如經典之作；刺激1995、教父等，各電影的詳細資料，及主要演員名單，讓你重溫當年電影所帶給你的悸動</p>
     </div>
     <div class="col-md-5">
-        <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        <img class="featurette-image img-responsive img-thumbnail" src="{{movies[randomNumber(movies.length)].Img_Src}}" alt="Movie">
     </div>
 </div>
 
@@ -61,11 +64,11 @@
 
 <div class="row featurette">
     <div class="col-md-5">
-        <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+       <img class="featurette-image img-responsive img-thumbnail" src="{{tvshow[randomNumber(tvshow.length)].Img_Src}}" alt="TV Show">
     </div>
     <div class="col-md-7">
-        <h2 class="featurette-heading">TV show <span class="text-muted">See for yourself.</span></h2>
-        <p class="lead">在TV show分頁中，我們也精選出了數部膾炙人口的電視影集，不論是緊張刺激的警匪角力的攻防戰，或是歡樂逗趣的喜劇影集，絕對都讓你愛不釋手，沉迷其中，已經看過的人，回味，帶來最初的感動；沒看過的人，欣賞，擁有全新的享受</p>
+        <h2 class="featurette-heading">TV show</h2>
+        <p class="lead text-justify">在TV Show分頁中，我們也精選出了數部膾炙人口的電視影集，不論是緊張刺激的警匪角力的攻防戰，或是歡樂逗趣的喜劇影集，絕對都讓你愛不釋手，沉迷其中，已經看過的人，回味，帶來最初的感動；沒看過的人，欣賞，擁有全新的享受</p>
     </div>
 </div>
 
@@ -73,11 +76,11 @@
 
 <div class="row featurette">
     <div class="col-md-7">
-        <h2 class="featurette-heading">People <span class="text-muted">Talented, Handsome, Beautiful</span></h2>
-        <p class="lead">在People這個分頁中，有一點非常的特別，我們不只是列出著名的男女演員還有每部電影、影集背後不可或缺的重要人物，那就是導演及編劇，在這邊我們可以看到每個演員導演的詳細資料及獲獎資訊，讓你在追星之餘，更可以了解到其傲人的成就</p>
+        <h2 class="featurette-heading">People </h2>
+        <p class="lead text-justify">在People這個分頁中，有一點非常的特別，我們不只是列出著名的男女演員還有每部電影、影集背後不可或缺的重要人物，那就是導演及編劇，在這邊我們可以看到每個演員導演的詳細資料及獲獎資訊，讓你在追星之餘，更可以了解到其傲人的成就</p>
     </div>
     <div class="col-md-5">
-        <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        <img class="featurette-image img-responsive img-thumbnail" src="{{people[randomNumber(people.length)].Img_Src}}" alt="People">
     </div>
 </div>
 </div>
