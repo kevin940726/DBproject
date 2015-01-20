@@ -465,7 +465,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       if (data.length !== 0) {
         $http({
           method: 'PUT',
-          url: 'api/awardPeople/'+mid+'/'+aid+'/'+y+ '/'+c,
+          url: 'api/awardPeople/'+pid+'/'+aid+'/'+y+ '/'+c,
           data: $.param({
             People_Id: pid,
             Award_Id: aid,
@@ -483,7 +483,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
           method: 'POST',
           url: 'api/awardPeople/',
           data: $.param({
-            Peolple_Id: pid,
+            People_Id: pid,
             Award_Id: aid,
             Type: $scope.form2.Type,
             Year: y,

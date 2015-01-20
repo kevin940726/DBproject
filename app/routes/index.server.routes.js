@@ -1088,7 +1088,17 @@ module.exports = function(app) {
 			}
 		});
 	});
-
+	// GET METHOD BY PEOPLE ID OF DirectTV
+	app.get('/api/driectTV/:pid', function(req, res){
+		return DirectTV.find({People_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
 	//POST to CREATE DIRECT_TV
 	app.post('/api/driectTV', function (req, res) {
 	  var doc;
