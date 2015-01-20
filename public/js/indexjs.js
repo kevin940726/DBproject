@@ -403,6 +403,12 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     $http.get('api/people/').success(function(data) {
       $scope.people = data;
     });
+  });
+  $http.get('api/awardPeople/'+$routeParams.id).success(function(data) {
+    $scope.awards = data;
+  });
+  $http.get('api/award/').success(function(data) {
+    $scope.awardsName = data;
   }); 
   $scope.randomPerson = function(data) {
     var rand = Math.floor((Math.random()*data));

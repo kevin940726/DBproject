@@ -107,7 +107,7 @@
   <a href="tvshow/{{tv.Show_Id}}" class="list-group-item thumbnails" ng-repeat="tv in tvshow | filter: tvshow_search | startFrom:currentPage*pageSize | limitTo:pageSize" >
     <div class="row container">
       <div class="col-md-1">
-        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{tv.Img_Src}}"/>
+        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{tv.Img_Src.length ? tv.Img_Src : 'img/alt.png'}}"/>
       </div>
       <div class="col-md-11">
         <h4 class="list-group-item-heading" style="line-height: 65px;">

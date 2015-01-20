@@ -107,7 +107,7 @@
   <a href="movies/{{movie.Movie_Id}}" class="list-group-item thumbnails" ng-repeat="movie in movies | filter: movie_search | startFrom:currentPage*pageSize | limitTo:pageSize | object2Array | orderBy: 'Movie_Id'" id="movie_{{movie.Movie_Id}}">
     <div class="row container">
       <div class="col-md-1">
-        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{movie.Img_Src}}"/>
+        <img class="img-responsive img-rounded" style="height: 65px; line-height: 65px;" src="{{movie.Img_Src.length ? movie.Img_Src : 'img/alt.png'}}"/>
       </div>
       <div class="col-md-11">
         <h4 class="list-group-item-heading" style="line-height: 65px;">

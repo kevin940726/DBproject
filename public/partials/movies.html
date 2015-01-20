@@ -102,7 +102,7 @@
 
 <div class="row featurette">
   <div class="col-md-3">
-    <a href="{{movie.Img_Src}}"><img class="featurette-image img-responsive" src="{{movie.Img_Src}}" alt="{{movie.Movie_Title}}"/></a>
+    <a href="{{movie.Img_Src}}"><img class="featurette-image img-responsive" src="{{movie.Img_Src}}" alt="img/alt.png"/></a>
   </div>
   <div class="col-md-7">
     
@@ -131,7 +131,8 @@
     </h4></div>
     <button href="" class="btn btn-link" ng-click="deleteAct(cast)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
-</a> 
+</a>
+<h4 class="list-group-item clearfix" ng-show="!acts.length">None</h4>  
 </div>
 
 
@@ -150,6 +151,7 @@
     <button href="" class="btn btn-link" ng-click="deleteAward(award)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
   </div>
 </a> 
+<h4 class="list-group-item clearfix" ng-show="!awards.length">None</h4>
 </div>
 
 
