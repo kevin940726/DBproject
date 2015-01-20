@@ -112,7 +112,7 @@
     <h4><span class="text-muted">Country: </span> {{movie.Country}}</h4>
     <h4><span class="text-muted">Language: </span> {{movie.Language}}</h4>
     <h4><span class="text-muted">Company: </span> {{movie.Company}}</h4>
-    <h4><span class="text-muted">Genre: </span> <span ng-repeat="genre in genres">{{genre.Genre}} </span><a href="" data-toggle="modal" data-target="#updateGenre"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a></h4>
+    <h4><span class="text-muted">Genre: </span> <span ng-repeat="genre in genres"><span class="label label-primary">{{genre.Genre}}</span> </span><a href="" data-toggle="modal" data-target="#updateGenre"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></a></h4>
   </div>
 </div>
 
@@ -237,7 +237,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add/Edit The Genre.</h4>
+        <h4 class="modal-title">Add/Edit/Delete The Genre.</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal" ng-submit="updateGenre()">
@@ -245,12 +245,17 @@
               <div class="col-sm-3"></div>
               <div class="radio col-sm-2">
                 <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="addG" ng-model="form4.addG" checked>Add
+                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="add" ng-model="form4.method" checked>Add
                 </label>
               </div>
               <div class="radio col-sm-2">
                 <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="deleteG" ng-model="form4.deleteG">Delete
+                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="edit" ng-model="form4.method">Edit
+                </label>
+              </div>
+              <div class="radio col-sm-2">
+                <label>
+                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="delete" ng-model="form4.method">Delete
                 </label>
               </div>
           </div>
@@ -258,6 +263,12 @@
             <label for="inputMovieTitle" class="col-sm-3 control-label">Genre</label>
             <div class="col-sm-9">
               <input class="form-control" ng-model="form4.Genre" placeholder="Genre" required>
+            </div>
+          </div>
+          <div class="form-group" ng-if="form4.method === 'edit'">
+            <label for="inputMovieTitle" class="col-sm-3 control-label">Update to</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form4.toGenre" placeholder="Genre">
             </div>
           </div>
           <div class="modal-footer">

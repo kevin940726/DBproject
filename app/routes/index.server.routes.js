@@ -1437,8 +1437,20 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF TVgenres.
+	app.get('/api/TVgenres/:sid', function(req, res){
+		return TVGenres.find({Show_Id: req.params.sid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
+
+	//GET METHOD BY MOVIE ID OF TVgenres.
 	app.get('/api/TVgenres/:sid/:gid', function(req, res){
-		return TVGenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function(err, doc){
+		return TVGenres.findOne({Show_Id: req.params.sid, Genre: req.params.gid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1455,7 +1467,7 @@ module.exports = function(app) {
 	  console.log(req.body);
 	  doc = new TVGenres({
 	  	Show_Id: req.body.Show_Id,
-	  	Genres: req.body.Genres
+	  	Genre: req.body.Genre
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1469,7 +1481,7 @@ module.exports = function(app) {
 
 	//remove a single doc from TVgenres
 	app.delete('/api/TVgenres/:sid/:gid', function (req, res) {
-	  return TVgenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function (err, doc) {
+	  return TVGenres.findOne({Show_Id: req.params.sid, Genre: req.params.gid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1484,9 +1496,9 @@ module.exports = function(app) {
 
 	//Single act update
 	app.put('/api/TVgenres/:sid/:gid', function (req, res) {
-	  return TVgenres.findOne({Show_Id: req.params.sid, Genres: req.params.gid}, function (err, doc) {
+	  return TVGenres.findOne({Show_Id: req.params.sid, Genre: req.params.gid}, function (err, doc) {
 	  	doc.Show_Id = req.body.Show_Id;
-	  	doc.Genres = req.body.Genres;
+	  	doc.Genre = req.body.Genre;
 	    return doc.save(function (err) {
 	      if (!err) {
 	        console.log("updated");
