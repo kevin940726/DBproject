@@ -213,6 +213,37 @@
 <!-- Modal Edit WriteTV END-->
 
 
+<!-- Modal Edit WriteMoive START-->
+<div class="modal fade" id="updateWriteMovie" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit The Write Movie List.</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="updateWriteMovie()">
+          
+          <div class="form-group">
+            <label for="inputWriteMovieID" class="col-sm-3 control-label">Movie ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" ng-model="form4.Movie_Id" id="inputMovieID" placeholder="Movie ID" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" ng-click="Submit" class="btn btn-primary">Save </button>
+          </div>
+
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- Modal Edit WriteMovie END-->
+
+
 
 
 <!-- An Award List START -->
@@ -254,7 +285,9 @@
 </a> 
 <h4 class="list-group-item" ng-show="!direct.length">None</h4>
 </div>
+<!-- An Direct TV List END -->
 
+<!-- An Write TV Show List START -->
 <h2>Write TV Show
   <span>
     <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateWriteTV"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
@@ -271,8 +304,26 @@
 </a> 
 <h4 class="list-group-item" ng-show="!write.length">None</h4>
 </div>
-<!-- An Direct TV List END -->
+<!-- An Write TV Show List START -->
 
+<!-- An Write movie List START -->
+<h2>Write Movie
+  <span>
+    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateWriteMovie"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
+  </span>
+</h2>
+
+<div class="list-group">
+<a href="movies/{{writerm.Show_Id}}" class="list-group-item clearfix" ng-repeat="writerm in writem" ng-context-menu="menuOptions" ng-mouseenter="showDel=true" ng-mouseleave="showDel=false">
+  <div class="row container">
+    <div class="col-md-11"><h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="moviename in (movies | filter: {Movie_Id: writerm.Movie_Id}:true)">{{moviename.Title}}   
+    </h4></div>
+    <button href="" class="btn btn-link" ng-click="deleteMovie(writerm)" ng-show="showDel"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+  </div>
+</a> 
+<h4 class="list-group-item" ng-show="!write.length">None</h4>
+</div>
+<!-- An Write movie List START -->
 
 
 
