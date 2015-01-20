@@ -95,7 +95,7 @@ module.exports = function(app) {
 	});
 
 	var Direct_TVSchema = new mongoose.Schema({
-		People_ID: String,
+		People_Id: String,
 		Show_Id: String,
 		Episodes: Number,
 	})
@@ -1078,8 +1078,8 @@ module.exports = function(app) {
 	});
 
 	//GET METHOD BY MOVIE ID OF DirectTV.
-	app.get('/api/directTV/:sid/:pid', function(req, res){
-		return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
+	app.get('/api/directTV/:pid/:sid', function(req, res){
+		return DirectTV.findOne({People_Id: req.params.pid, Show_Id: req.params.sid} ,  function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1105,9 +1105,9 @@ module.exports = function(app) {
 	  console.log("POST: ");
 	  console.log(req.body);
 	  doc = new DirectTV({
-	  	Show_Id: req.body.Show_Id,
 	  	People_Id: req.body.People_Id,
-	  	Episodes: req.body.Episodes
+	  	Show_Id: req.body.Show_Id,
+	  	Episodes: req.body.Episodes,
 	  });
 	  doc.save(function (err) {
 	    if (!err) {
@@ -1137,8 +1137,8 @@ module.exports = function(app) {
 	//Single act update
 	app.put('/api/directTV/:mid/:pid', function (req, res) {
 	  return DirectTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
-	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.People_Id = req.body.People_Id;
+	  	doc.Show_Id = req.body.Show_Id;
 	  	doc.Episodes = req.body.Episodes;
 	    return doc.save(function (err) {
 	      if (!err) {
@@ -1244,7 +1244,7 @@ module.exports = function(app) {
 	//--------------------------------WriteTV START-----------------------------
 	//GET METHOD OF WriteTV.
 	app.get('/api/writeTV', function(req, res){
-		return WriteTV.find(function(err, doc){
+		return WriteTVShow.find(function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1256,7 +1256,7 @@ module.exports = function(app) {
 
 	//GET METHOD BY TVShow ID OF WriteTV.
 	app.get('/api/writeTV/:sid/:pid', function(req, res){
-		return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
+		return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1267,7 +1267,7 @@ module.exports = function(app) {
 	});
 	//GET METHOD BY PEOPLE ID OF WriteTV
 	app.get('/api/writeTV/:pid', function(req, res){
-		return WriteTV.find({People_Id: req.params.pid}, function(err, doc){
+		return WriteTVShow.find({People_Id: req.params.pid}, function(err, doc){
 			if(!err){
 				return res.send(doc);
 			}
@@ -1281,7 +1281,7 @@ module.exports = function(app) {
 	  var doc;
 	  console.log("POST: ");
 	  console.log(req.body);
-	  doc = new WriteTV({
+	  doc = new WriteTVShow({
 	  	People_Id: req.body.People_Id,
 	  	Show_Id: req.body.Show_Id
 	  });
@@ -1297,7 +1297,7 @@ module.exports = function(app) {
 
 	//remove a single doc from WriteTV
 	app.delete('/api/writeTV/:sid/:pid', function (req, res) {
-	  return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	console.log(doc);
 	    return doc.remove(function (err) {
 	      if (!err) {
@@ -1312,7 +1312,7 @@ module.exports = function(app) {
 
 	//Single act update
 	app.put('/api/writeTV/:sid/:pid', function (req, res) {
-	  return WriteTV.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
+	  return WriteTVShow.findOne({Show_Id: req.params.sid, People_Id: req.params.pid}, function (err, doc) {
 	  	doc.People_Id = req.body.People_Id;
 	  	doc.Show_Id = req.body.Show_Id;
 	    return doc.save(function (err) {

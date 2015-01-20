@@ -474,14 +474,14 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     var pid = $routeParams.id;
     var sid = $scope.form1.Show_Id;
     
-    $http.get('api/directTV/'+sid+'/'+pid ).success(function(data) {
+    $http.get('api/directTV/'+pid+'/'+sid ).success(function(data) {
       if (data.length !== 0) {
         $http({
           method: 'PUT',
-          url: 'api/directTV/'+sid+'/'+ pid,
+          url: 'api/directTV/'+pid+'/'+sid,
           data: $.param({
-            Show_Id: sid,
             People_Id: pid,
+            Show_Id: sid,
             Episodes: $scope.form1.Episodes,
             
           }),
@@ -493,10 +493,10 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       else {
         $http({
           method: 'POST',
-          url: 'api/directTV/',
+          url: 'api/directTV',
           data: $.param({
-            Show_Id: sid,
             People_Id: pid,
+            Show_Id: sid,
             Episodes: $scope.form1.Episodes,
           }),
           headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -596,7 +596,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     var sid = data.Show_Id;
     $http({
       method: 'DELETE',
-      url: 'api/awardPeople/'+sid+'/'+pid,
+      url: 'api/directTV/'+sid+'/'+pid,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
       $window.location.href = '/people/'+pid;
@@ -607,7 +607,7 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     var sid = data.Show_Id;
     $http({
       method: 'DELETE',
-      url: 'api/awardPeople/'+sid+'/'+pid,
+      url: 'api/writeTV/'+sid+'/'+pid,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
       $window.location.href = '/people/'+pid;
