@@ -151,14 +151,6 @@ index.controller('MoviesCtrl', function ($rootScope, $scope, $http, $window, $lo
       });
     });
 	});	
-  $scope.randomMovie = function(data) {
-    var rand = Math.floor((Math.random()*data));
-    while (rand === $routeParams.id*1){
-      rand = Math.floor((Math.random()*data));
-    }
-    $location.path("/movies/"+rand);
-    return rand;
-  };
   $scope.removeMovie = function(data) {
     var id = data.Movie_Id;
     $http({
@@ -418,16 +410,6 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     $location.path("/people/"+rand);
     return rand;
   };
-  $scope.removePerson = function(data) {
-    var id = data.People_Id;
-    $http({
-      method: 'DELETE',
-      url: 'api/people/'+id,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    }).success(function() {
-      $location.path("/people");
-    });
-  };
   $scope.formset = function(data) {
     $scope.form = {
       People_Id: data.People_Id,
@@ -482,16 +464,6 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
       $scope.acts = data;
     })
   }); 
-  $scope.removeTVshow = function(data) {
-    var id = data.Show_Id;
-    $http({
-      method: 'DELETE',
-      url: 'api/tvshow/'+id,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    }).success(function() {
-      $location.path("/tvshow");
-    });
-  };
   $scope.formset = function(data) {
     $scope.form = {
       Show_Id: data.Show_Id,
