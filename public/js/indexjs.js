@@ -27,6 +27,11 @@ index.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
       templateUrl : 'partials/tvshows.html',
       controller  : 'TVShowCtrl'
     })
+    .when('/tvshow/:sid/:nid/:eid', {
+      title: ' - IMDb2',
+      templateUrl : 'partials/tvshowdetail.html',
+      controller  : 'TVShowDetailCtrl'
+    })
     .when('/people', {
       title: 'People List - IMDb2',
       templateUrl: 'partials/peopleList.html',
@@ -460,7 +465,7 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
     $scope.people = data;
   });
 
-  $http.get('api/tvshowdetail').success(function(data) {
+  $http.get('api/tvshowdetail/'+$routeParams.id).success(function(data) {
     $scope.tvshowdetail = data;
   });
   $http.get('api/awardTV/'+$routeParams.id).success(function(data){
@@ -498,22 +503,7 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
       Release_Date: data.Release_Date
     };
   };
-  $scope.formset = function(data) {
-    $scope.form2 = {
-      Show_Id: data.Show_Id,
-      MovieTitle: data.Movie_Title,
-      ReleaseDate: data.Release_Date,
-      Duration: data.Duration,
-      Rating: data.Rating,
-      Director: data.Director,
-      ImgSrc: data.Img_Src,
-      Description: data.Description,
-      Country: data.Country,
-      Language: data.Language,
-      Company: data.Company
-    };
-    
-  };
+  
   $scope.updateTVshow = function(data) {
     var id = data.Show_Id;
     $http({
@@ -578,12 +568,6 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
     });
   };
 
-  $scope.updatedetail = function(){
-    var sid;
-    var nid;
-    var eid;
-
-  }
   $scope.updateAward = function() {
     var mid = $routeParams.id;
     var aid = $scope.form3.Award_Id;
@@ -661,5 +645,15 @@ index.controller('AwardsCtrl', function($scope, $http) {
 });
 
 
+index.controller('TVShowDetailCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
+  $http.get('/api/tvshowdetail/'+$routeParams.sid+'/'+$routeParams.nid+'/'+$routeParams.eid).success(function(data) {
+    $scope.detail = data;
+    console.log($scope.detail);
+    $rootScope.title = $scope.detail.Title + " - IMDb2";
+  });
+  
+
+
+});
 
 

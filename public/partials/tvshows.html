@@ -114,6 +114,32 @@
   </div>
 </div>
 
+<hr class="featurette-divider">
+<br></br>
+
+<!-- Episodes START -->
+<div class="panel-group" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" ng-click="isCollapsed = !isCollapsed">
+      <a href="" style="text-decoration: none">
+        <h4>Episodes</h4>
+      </a>
+    </div>
+
+    <div class="panel-body" ng-show="isCollapsed">
+      <ul class="list-group">
+        <a href="tvshow/{{m.Show_Id}}/{{m.Season}}/{{m.Episode}}" ng-repeat="m in tvshowdetail | object2Array | orderBy: ['Season', 'Episode']" style="text-decoration: none">
+          <li class="list-group-item">
+            <h5>Season {{m.Season}} 
+              <span class="label label-success">{{m.Episode}}</span> {{m.Title}}</h5>
+          </li>
+        </a> 
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Episodes END -->
 <br></br>
 <h2>Cast
   <span>
@@ -133,27 +159,8 @@
 </div>
 
 
-<br></br>
-<h2>Episodes
-  <span>
-    <button href="" class="btn btn-link" data-toggle="modal" data-target="#updateAward"><span aria-hidden="true" class="glyphicon glyphicon-pencil"></span></button>
-  </span>
-</h2>
-<div class="list-group">
 
-  <div class="row container">
-    <div class="col-md-11">
-    <dl>
-      <dt>Episode 1</dt>
-      <dd>{{detail.detail_episode}}</dd>
-    </dl>
-    <!-- <h4 class="list-group-item-heading" style="line-height: 65px;" ng-repeat="awardName in (awardsName | filter: {Award_Id: award.Award_Id}:true)">{{awardName.Award_Name}}
-      <small>{{award.Year}}</small>    {{award.Type}}
-    </h4> -->
-    </div>
-    <button href="" class="btn btn-link" ng-click="deleteAward(award)"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
-  </div>
-</div>
+
 
 
 <br></br>
