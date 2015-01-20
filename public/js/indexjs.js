@@ -382,6 +382,8 @@ index.controller('TVShowListCtrl', function ($scope, $http, $window) {
 });
 
 
+
+
 index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $location, $routeParams) {
   $http.get('/api/people').success(function(data) {
     $scope.total = data.length;
@@ -452,6 +454,10 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/people').success(function(data) {
     $scope.people = data;
   });
+
+  $http.get('api/tvshowdetail').success(function(data) {
+    $scope.tvshowdetail = data;
+  });
   $http.get('api/awardTV/'+$routeParams.id).success(function(data){
     $scope.awards = data;
   });
@@ -483,16 +489,25 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
       Show_Id: data.Show_Id,
       Title: data.Title,
       Season: data.Season,
-      Length: data.Length,
-      Img_Src: data.Img_Src,
+      Episode: data.Episode,
+      Release_Date: data.Release_Date
+    };
+  };
+  $scope.formset = function(data) {
+    $scope.form2 = {
+      Show_Id: data.Show_Id,
+      MovieTitle: data.Movie_Title,
+      ReleaseDate: data.Release_Date,
+      Duration: data.Duration,
+      Rating: data.Rating,
+      Director: data.Director,
+      ImgSrc: data.Img_Src,
       Description: data.Description,
       Country: data.Country,
       Language: data.Language,
-      Company: data.Company,
-      Start_Year: data.Start_Year,
-      End_Year: data.End_Year,
-      Rating: data.Rating,
+      Company: data.Company
     };
+    
   };
   $scope.updateTVshow = function(data) {
     var id = data.Show_Id;
@@ -557,6 +572,13 @@ index.controller('TVShowCtrl', function ($rootScope, $scope, $http, $window, $lo
       $window.location.href = '/tvshow/'+mid;
     });
   };
+
+  $scope.updatedetail = function(){
+    var sid;
+    var nid;
+    var eid;
+
+  }
   $scope.updateAward = function() {
     var mid = $routeParams.id;
     var aid = $scope.form3.Award_Id;
