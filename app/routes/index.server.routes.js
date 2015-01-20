@@ -1189,7 +1189,17 @@ module.exports = function(app) {
 			}
 		});
 	});
-
+	//GET METHOD BY PEOPLE ID OF WriteMovie
+	app.get('/api/writeMovie/:pid', function(req, res){
+		return WriteMovie.find({People_Id: req.params.pid}, function(err, doc){
+			if(!err){
+				return res.send(doc);
+			}
+			else{
+				return res.send("Error!");
+			}
+		});
+	});
 	//POST to CREATE WriteMovie
 	app.post('/api/writeMovie', function (req, res) {
 	  var doc;

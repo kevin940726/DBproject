@@ -420,6 +420,9 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
   $http.get('api/writeTV/'+$routeParams.id).success(function(data) {
     $scope.write = data;
   });
+  $http.get('api/writeMovie/'+$routeParams.id).success(function(data) {
+    $scope.writem = data;
+  });
   $http.get('api/tvshow/').success(function(data) {
     $scope.tvshow = data;
   });
@@ -578,6 +581,51 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
       }
     });
   };
+  $scope.updateWriteMovie = function() {
+    var pid = $routeParams.id;
+    var mid = $scope.form4.Movie_Id;
+    $http.get('api/writeMovie/'+mid+'/'+pid ).success(function(data) {
+      if (data.length !== 0) {
+        $http({
+          method: 'PUT',
+          url: 'api/writeMovie/'+mid+'/'+pid,
+          data: $.param({
+            People_Id: pid,
+            Movie_Id: mid,
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+      else {
+        $http({
+          method: 'POST',
+          url: 'api/writeMovie',
+          data: $.param({
+            People_Id: pid,
+            Movie_Id: mid,
+          }),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function() {
+          $window.location.href = '/people/'+pid;
+        });
+      }
+    });
+  };
+  $scope.deleteAward = function(data) {
+    var pid = data.People_Id;
+    var aid = data.Award_Id;
+    var y = data.Year;
+    var c = data.Category;
+    $http({
+      method: 'DELETE',
+      url: 'api/awardPeople/'+pid+'/'+aid+'/'+y+'/' +c,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people/'+pid;
+    });
+  };
   $scope.deleteAward = function(data) {
     var pid = data.People_Id;
     var aid = data.Award_Id;
@@ -608,6 +656,17 @@ index.controller('PeopleCtrl', function ($rootScope, $scope, $http, $window, $lo
     $http({
       method: 'DELETE',
       url: 'api/writeTV/'+sid+'/'+pid,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      $window.location.href = '/people/'+pid;
+    });
+  };
+  $scope.deleteMovie = function(data) {
+    var pid = data.People_Id;
+    var mid = data.Movie_Id;
+    $http({
+      method: 'DELETE',
+      url: 'api/writeMovie/'+mid+'/'+pid,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
       $window.location.href = '/people/'+pid;
