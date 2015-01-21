@@ -1,4 +1,4 @@
-# DBproject - IMDb2
+# DBproject - [IMDb2](http://db-final-project-2015.herokuapp.com/)
 ###### NTU DB project: MEAN
 
 IMDb2, Internet Movies Database 2, is the website which stores the movies, TV shows, and people data. The source of the data is come from [IMDb](http://www.imdb.com/), which is the well-known online movies database. We use their open data to build this website for practicing and studying. The rights of all the data is belong to the original owner.
